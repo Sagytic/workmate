@@ -14,4 +14,4 @@ try {
 } catch {
     # No running Workmate server; start the local process below.
 }
-& $workmatePython -m uvicorn backend.app:app --host 127.0.0.1 --port 8765
+& $workmatePython -m uvicorn backend.app:app --host 127.0.0.1 --port 8765 --no-access-log

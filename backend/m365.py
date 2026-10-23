@@ -447,7 +447,7 @@ class M365Connector:
                     auth.update(user_code=self._pending['user_code'], verification_uri=self._pending['verification_uri'],
                                 expires_in=remaining, interval=self._pending['interval'],
                                 next_poll_in=max(0, int(self._pending['next_poll'] - self._clock() + .999)))
-            items = self.store.all('connected_items')
+            items = [item for item in self.store.all('connected_items') if item.get('provider') in ('m365', 'eml', 'ics')]
             return {'configured': bool(self.client_id), 'connected': bool(self._token and self.account),
                     'client_id': self.client_id, 'tenant': self.tenant, 'account': self.account,
                     'auth': auth, 'scopes': list(SCOPES), 'read_only': True, 'error': self.error,

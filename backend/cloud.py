@@ -38,6 +38,7 @@ def destroy(sid, entry):
     entry['module'].engine.stop()
     entry['module'].planner.key = ''
     entry['module'].m365.close()
+    entry['module'].google.close()
     sys.modules.pop(entry['module'].__name__, None)
     target = (SESSIONS / sid).resolve()
     if target.parent == SESSIONS and target.is_dir():
@@ -91,6 +92,7 @@ async def lifespan(app):
         entry['module'].engine.stop()
         entry['module'].planner.key = ''
         entry['module'].m365.close()
+        entry['module'].google.close()
     VISITORS.clear()
 
 
@@ -104,14 +106,14 @@ async def headers(request, call_next):
     response = await call_next(request)
     response.headers['Cache-Control'] = 'no-store'
     response.headers['X-Content-Type-Options'] = 'nosniff'
-    response.headers['Referrer-Policy'] = 'same-origin'
+    response.headers.setdefault('Referrer-Policy', 'same-origin')
     response.headers['X-Frame-Options'] = 'SAMEORIGIN'
     return response
 
 
 @app.get('/api/health')
 def health():
-    return {'ok':True, 'service':'workmate', 'version':'0.7.0', 'hosted':True}
+    return {'ok':True, 'service':'workmate', 'version':'0.8.0', 'hosted':True}
 
 
 class VisitorRouter:

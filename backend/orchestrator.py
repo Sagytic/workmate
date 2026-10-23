@@ -51,6 +51,8 @@ class Engine:
                 self.check_notifications()
                 from .companion import tick
                 tick(self.store)
+                from .personal_desk import tick as tick_personal_desk
+                tick_personal_desk(self.store)
                 self.check_due_workflows()
             except Exception:
                 # A notification failure never changes task truth.

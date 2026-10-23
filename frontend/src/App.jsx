@@ -7,12 +7,14 @@ import {Companion,TodayPlan} from './companion';
 import {TicketsPage} from './tickets';
 import {ConnectionSettings} from './connection';
 import {AgentHub} from './agenthub';
-import {M365Page} from './m365';
+import {ConnectionsPage} from './googleworkspace';
+import PersonalDesk from './personaldesk';
 import './studio-integration.css';
 
 const NAV = [
+  ['desk', '비서 데스크', ListChecks, '브리핑 · 후속 연락 · 나의 루틴'],
   ['agents', '에이전트 스튜디오', Boxes, '나만의 에이전트와 협업 미션'],
-  ['connections', 'Outlook · M365', Mail, '메일 · 일정 · 업무 맥락'],
+  ['connections', '메일·일정 연결', Mail, 'Outlook · Gmail · Calendar'],
   ['conversation', '업무 요청', History, '요청과 답변 기록'],
   ['files', 'Excel 파일', FolderOpen, '업로드 파일과 예제'],
   ['documents', '자료실', BookOpen, '근거 자료'],
@@ -131,17 +133,18 @@ export default function App() {
       <div className="workspace-switch"><span className="workspace-avatar">W</span><div><strong>내 업무 워크스페이스</strong><span>개인 워크스페이스</span></div><ShieldCheck size={16}/></div>
       <span className="nav-caption">업무 공간</span>
       <nav>{NAV.map(([id, label, Icon]) => <button key={id} aria-label={label} aria-current={tab===id?"page":undefined} className={`nav-item ${tab === id ? 'active' : ''}`} onClick={() => navigate(id)}><Icon size={19}/><span>{label}</span>{id === 'home' && state.stats?.waiting > 0 && <span className="nav-count">{state.stats.waiting}</span>}</button>)}</nav>
-      <div className="sidebar-bottom"><div className="local-note"><span className={`live-dot ${connected ? '' : 'offline'}`}/><strong>{connected ? (state.hosted?'온라인 워크스페이스 연결됨':'로컬 워크스페이스 연결됨') : '서버 연결 확인 중'}</strong><p>{state.hosted?'방문 세션별로 분리됩니다. 필요한 결과는 다운로드해 보관하세요.':'작업 이력과 결과를 이 기기에 보관합니다.'}</p></div><div className="profile"><span className="profile-avatar"><UserRound size={18}/></span><div><strong>내 업무 공간</strong><span>Workmate · v0.7</span></div></div></div>
+      <div className="sidebar-bottom"><div className="local-note"><span className={`live-dot ${connected ? '' : 'offline'}`}/><strong>{connected ? (state.hosted?'온라인 워크스페이스 연결됨':'로컬 워크스페이스 연결됨') : '서버 연결 확인 중'}</strong><p>{state.hosted?'방문 세션별로 분리됩니다. 필요한 결과는 다운로드해 보관하세요.':'작업 이력과 결과를 이 기기에 보관합니다.'}</p></div><div className="profile"><span className="profile-avatar"><UserRound size={18}/></span><div><strong>내 업무 공간</strong><span>Workmate · v0.8</span></div></div></div>
     </aside>
     <div className="main-shell">
       <header className="topbar"><div className="breadcrumb"><button className="icon-button mobile-menu" onClick={() => setSidebarOpen(true)} aria-label="메뉴 열기"><Menu size={21}/></button><span>워크스페이스</span><ChevronRight size={14}/><strong>{currentNav[1]}</strong></div><div className="topbar-actions"><button className="icon-button theme-toggle" aria-label="화면 테마 전환" title={theme==='dark'?'라이트 모드로 전환':'다크 모드로 전환'} aria-pressed={theme==='light'} onClick={()=>setTheme(theme==='dark'?'light':'dark')}>{theme==='dark'?<Sun size={15}/>:<Moon size={15}/>}</button><button className="global-search-trigger" onClick={() => setSearchOpen(true)} aria-label="전체 검색 열기"><Search size={15}/><span>검색</span><kbd>Ctrl K</kbd></button><button className={`mode-chip ${state.llm?.status === 'connected' ? 'live' : ''}`} onClick={() => setConnectionOpen(true)} title="연결 상태 확인"><span/>{!connected ? '연결 대기' : state.llm?.status === 'connected' ? 'API 연결됨' : state.llm?.status === 'error' ? '연결 오류' : state.llm_configured ? '모델 설정됨' : '규칙 기반'}</button><button className="icon-button bell-button" onClick={() => setNotificationsOpen(!notificationsOpen)} aria-label={`알림 ${unread}개`}><Bell size={20}/>{unread > 0 && <i>{unread}</i>}</button></div>
-        {notificationsOpen && <div className="notification-panel"><div className="card-heading"><h3>업무 알림 {unread > 0 && <span className="subtle-count">{unread}</span>}</h3><Button icon={RefreshCw} className="text-button small" busy={busy === 'notifications'} onClick={() => perform('notifications', () => post('/notifications/check'), '현재 기한을 기준으로 알림을 확인했습니다.')}>지금 확인</Button></div>{state.notifications.length ? <div className="notification-list">{state.notifications.map(n => <button key={n.id} className={`notification-row ${!n.read && !n.read_at ? 'unread' : ''}`} onClick={async () => { await perform(`read-${n.id}`, () => post(`/notifications/${n.id}/read`)); if (n.task_id) { showTask(n.task_id); setNotificationsOpen(false); } }}><span className="notification-mark"/><div><strong>{asText(n.title || n.message || '업무 알림')}</strong>{n.title && n.message && <p>{asText(n.message)}</p>}<time>{dateTime(n.created_at || n.at)}</time></div>{!n.read && !n.read_at && <Check size={14}/>}</button>)}</div> : <Empty icon={Bell} title="새 알림이 없습니다">확인이 필요한 변화가 생기면 알려드려요.</Empty>}</div>}
+        {notificationsOpen && <div className="notification-panel"><div className="card-heading"><h3>업무 알림 {unread > 0 && <span className="subtle-count">{unread}</span>}</h3><Button icon={RefreshCw} className="text-button small" busy={busy === 'notifications'} onClick={() => perform('notifications', () => post('/notifications/check'), '현재 기한을 기준으로 알림을 확인했습니다.')}>지금 확인</Button></div>{state.notifications.length ? <div className="notification-list">{state.notifications.map(n => <button key={n.id} className={`notification-row ${!n.read && !n.read_at ? 'unread' : ''}`} onClick={async () => { await perform(`read-${n.id}`, () => post(`/notifications/${n.id}/read`)); if (n.hub_run_id) { showHubRun(n.hub_run_id); setNotificationsOpen(false); } else if (n.task_id) { showTask(n.task_id); setNotificationsOpen(false); } else if (n.route && NAV.some(item => item[0] === n.route)) { navigate(n.route); setNotificationsOpen(false); } }}><span className="notification-mark"/><div><strong>{asText(n.title || n.message || '업무 알림')}</strong>{n.title && n.message && <p>{asText(n.message)}</p>}<time>{dateTime(n.created_at || n.at)}</time></div>{!n.read && !n.read_at && <Check size={14}/>}</button>)}</div> : <Empty icon={Bell} title="새 알림이 없습니다">확인이 필요한 변화가 생기면 알려드려요.</Empty>}</div>}
       </header>
       <main className="main-content">
         {connectionError && <div className="connection-alert"><AlertTriangle size={17}/><span>{connectionError}</span><button onClick={refresh}>다시 연결</button></div>}
         {loading ? <div className="initial-loading"><Loader2 className="spin" size={26}/><p>내 업무 공간을 불러오고 있어요</p></div> : <>
           {tab === 'home' && <><TodayPlan {...props}/><section className="hub-home-strip"><div><span>AGENT STUDIO</span><h3>하나의 요청, 여러 전문 에이전트.</h3><p>메일 정리 · 회의 준비 · 후속 연락 · 집중 계획, 그리고 프로젝트의 다음 행동까지</p></div><button className="button secondary" onClick={()=>navigate('agents')}>에이전트에게 맡기기 <ArrowRight size={15}/></button></section><HomeDesk {...props}/></>}
-          {tab === 'connections' && <M365Page {...props} onPrepareAgent={prepareHub}/>}
+          {tab === 'desk' && <PersonalDesk {...props} onPrepareAgent={prepareHub}/>}
+          {tab === 'connections' && <ConnectionsPage {...props} onPrepareAgent={prepareHub}/>}
           {tab === 'agents' && <AgentHub {...props} initialRunId={hubRunId} initialDraft={hubDraft} onDraftConsumed={()=>setHubDraft(null)}/>}
           {tab === 'excel' && <ExcelV2 {...props}/>}
           {tab === 'builder' && <BuilderPage {...props} openRecords={setRecordsApp}/>}
@@ -155,7 +158,7 @@ export default function App() {
           {tab === 'analysis' && <AnalysisPage {...props}/>}
           {tab === 'examples' && <ExamplesPage {...props}/>}
         </>}
-        <footer className="page-footer"><span><ShieldCheck size={13}/> 실행 단계 · 근거 · 결과물을 함께 보관합니다</span><span>Workmate · v0.7</span></footer>
+        <footer className="page-footer"><span><ShieldCheck size={13}/> 실행 단계 · 근거 · 결과물을 함께 보관합니다</span><span>Workmate · v0.8</span></footer>
       </main>
     </div>
     <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} {...props}/>

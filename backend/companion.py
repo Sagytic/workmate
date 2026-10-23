@@ -100,7 +100,8 @@ def install_companion(app, ctx):
         unread = [n for n in ctx.store.all('notifications') if not n.get('read') and not n.get('read_at')]
         runs = ctx.store.all('uat_runs')
         hub_runs = ctx.store.all('hub_runs')
-        nudges = [{'id': n['id'], 'title': n['title'], 'body': n['message'], 'task_id': n.get('task_id'), 'type': 'notification'} for n in unread[:4]]
+        nudges = [{'id': n['id'], 'title': n['title'], 'body': n['message'], 'task_id': n.get('task_id'),
+                   'route': 'desk' if n.get('route') == 'desk' else None, 'type': 'notification'} for n in unread[:4]]
         if items:
             first = items[0]
             nudges.append({'id': 'priority_' + first['task_id'] + '_' + today.isoformat(), 'title': '먼저 확인해 볼까요?', 'body': first['title'] + ' · ' + first['reason'], 'task_id': first['task_id'], 'type': 'priority'})

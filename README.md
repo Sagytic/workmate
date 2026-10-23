@@ -1,10 +1,39 @@
-# Workmate v0.7 · 개인비서와 업무 실행 플랫폼
+# Workmate v0.8 · 개인비서와 업무 실행 플랫폼
 
 일을 기억하고 다음 행동을 챙기는 개인 업무 플랫폼입니다. 온라인 워크스페이스와 Windows 설치형으로 사용할 수 있습니다. 업무 요청을 기억하고, Excel을 검사하고, 실제 저장되는 업무앱을 만들고, 변경 사항을 브라우저에서 검증해 결과물까지 남깁니다. 대화·작업 상태·파일·앱 데이터가 하나의 워크스페이스에 연결됩니다.
 
-[워크스페이스 열기](https://workmate-otpo.onrender.com/) · [서비스 소개와 영상](https://sagytic.github.io/workmate/) · [설치·개인 API 사용 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html) · [Windows Mini와 실행 패키지](https://github.com/Sagytic/workmate/releases/tag/v0.7.0)
+[워크스페이스 열기](https://workmate-otpo.onrender.com/) · [서비스 소개와 영상](https://sagytic.github.io/workmate/) · [설치·개인 API 사용 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html) · [Windows Mini와 실행 패키지](https://github.com/Sagytic/workmate/releases/tag/v0.8.0)
 
-## v0.7 메일·일정과 함께 일하는 에이전트
+## v0.8 개인 비서 데스크와 Google 읽기 연결
+
+왼쪽 **비서 데스크**에서 반복 업무를 이어갑니다. 기존 8개 전문 분야는 유지하며 아래 네 가지 동작을 연결합니다.
+
+| 기능 | 사용 방법과 동작 범위 |
+|---|---|
+| 오늘의 브리핑 | 날짜·프로젝트·자료를 정해 가져온 메일, 당일과 겹치는 일정, 실제 마감 업무를 집계합니다. 원문과 업무 링크, 전문 에이전트로 이어가는 설정을 제공합니다. LLM 호출 없이 동작합니다. |
+| 후속 연락 | 원문에 연결해 내가 답할 일과 기다리는 답을 직접 등록합니다. 기한·메모, 미루기·완료·보관을 관리합니다. 전체 대화의 미회신을 추론하지 않습니다. |
+| 나의 루틴 | 요일·한국 시간·자료 범위에 따라 서버 실행 중 브리핑을 만들고 모아에 한 번 알립니다. 외부 계정을 자동 조회하거나 LLM을 자동 실행하지 않습니다. |
+| 내 글쓰기 | 말투·언어·길이·서명·상용구를 저장하고 사용을 켭니다. 다음 inbox/followup API 분석에서만 스타일로 참고하며 사실의 근거로 사용하지 않습니다. |
+
+자료 선택이 비어 있으면 해당 프로젝트(프로젝트도 없으면 개인 작업 공간)에서 **가져온 메일·일정 사본**을 집계합니다. 미정·불확실한 일정은 경고와 함께 날짜별 목록에서 제외합니다. 날짜만 있는 기한은 자정으로 바꾸지 않으며, Google 종일 일정은 원래 캘린더 날짜와 시간대를 보존합니다. 최신 브리핑 30개, 활성 연락 100개, 활성 루틴 30개, 상용구 12개 한도입니다. 보관은 기록을 유지하면서 활성 목록과 예약에서 제외합니다.
+
+**메일·일정 연결 → Google**은 Gmail 받은편지함과 Google 기본 캘린더를 읽고 선택한 항목을 자료실로 가져옵니다. Google 검색은 현재 불러온 받은편지함 목록 안의 필터이며 전체 Gmail 검색 연산자가 아닙니다. 일정 조회는 7일 또는 14일 범위이며 목록 한도를 표시합니다.
+
+1. 본인의 Google Cloud 프로젝트에서 Gmail API와 Google Calendar API를 사용 설정합니다.
+2. Google Auth Platform의 브랜딩·대상 사용자·데이터 액세스를 설정합니다. External 앱의 Testing 상태에는 허용 사용자를 등록하고 조직 정책을 확인합니다.
+3. **Web application** OAuth client를 만들고 Workmate 화면의 callback URI를 등록합니다. 온라인 기본값은 `https://workmate-otpo.onrender.com/api/google/auth/callback`, 로컬은 `http://127.0.0.1:8765/api/google/auth/callback`입니다.
+4. client ID·client secret을 Workmate에 입력합니다. 같은 브라우저에서 연결을 시작하고 Google 로그인·읽기 동의를 마칩니다.
+5. 불러온 항목을 선택해 가져오고 비서 데스크 또는 에이전트의 참고 자료로 지정합니다.
+
+권한은 `openid`, `email`, `gmail.readonly`, `calendar.events.readonly`입니다. **gmail.readonly도 restricted scope**이므로 공개 앱·서버 처리 방식에 따라 Google 검증이나 보안 평가가 필요할 수 있습니다. 개인 앱이 자동 면제를 뜻하지 않습니다. External Testing 앱의 해당 갱신 토큰은 일반적으로 7일 만료입니다. client secret·접근/갱신 토큰은 해당 작업 공간의 서버 메모리에만 유지하고 서버 재시작·세션 만료 후 다시 연결합니다. 선택해 저장한 원문은 연결 해제와 별도로 자료실에서 관리합니다. 메일 조회만으로 모델을 호출하지 않으며, 사용자가 전문 분석을 요청하면 선택한 원문이 개인 LLM 제공자로 전송될 수 있습니다.
+
+Google·Microsoft의 읽기 커넥터 구현과 사용자의 계정 인증은 별개입니다. 실제 로그인·동의는 본인의 앱 설정과 제공자·조직 승인 후 완료합니다. Microsoft 앱 등록이 허용되지 않으면 관리자 승인 후 연결하고 EML·ICS 파일을 먼저 사용할 수 있습니다. 메일 발송·메일 라벨 변경·외부 캘린더 쓰기는 수행하지 않습니다.
+
+[Google 공식 웹 OAuth](https://developers.google.com/identity/protocols/oauth2/web-server) · [Gmail 권한](https://developers.google.com/workspace/gmail/api/auth/scopes) · [토큰 만료](https://developers.google.com/identity/protocols/oauth2/#expiration) · [개인 비서 제품 비교와 적용](https://sagytic.github.io/workmate/Workmate_사용안내.html#global-patterns) · [비서 데스크 실제 영상](https://sagytic.github.io/workmate/Workmate_비서데스크_활용흐름.mp4)
+
+배포 관리자가 승인된 웹 앱을 준비했다면 서버 환경변수 `WORKMATE_GOOGLE_CLIENT_ID`, `WORKMATE_GOOGLE_CLIENT_SECRET`으로 기본 앱을 구성할 수 있습니다. 방문자는 각자 Google 연결 버튼에서 로그인·동의하며, 토큰·가져온 자료는 방문자별로 분리됩니다. 직접 입력한 BYO 설정은 해당 방문자에서 기본 앱을 덮어씁니다. **현재 공개 서비스에는 공용 Google 앱이 설정되어 있지 않아 본인의 앱 등록이 필요합니다.** 환경변수의 비밀값을 소스·영상·공개 로그에 포함하지 않습니다.
+
+## 메일·일정과 함께 일하는 8개 전문 분야
 
 여덟 가지 전문 분야를 기존 여덟 가지 업무 도구와 함께 사용합니다. 왼쪽 **에이전트 스튜디오**에서 직접 실행하거나 업무 요청에서 전문 분야를 지정합니다.
 
@@ -40,7 +69,7 @@
 
 ## Outlook · Microsoft 365와 파일 가져오기
 
-왼쪽 **Outlook · M365**에서 계정의 메일·일정을 조회하고 선택한 항목을 자료실에 가져옵니다. EML·ICS 파일은 선택한 파일의 모든 메일·일정 항목을 가져오며, 분석에 사용할 자료는 에이전트 프로필에서 따로 지정합니다. 본인의 Microsoft Entra 앱으로 읽기 연결하거나 `.eml`·`.ics` 파일을 사용할 수 있습니다. 예제 파일은 `data/examples/outlook/project-mail.eml`과 `project-calendar.ics`입니다. 자료를 프로젝트에 연결한 뒤 전문 에이전트 프로필의 참고 자료로 선택하세요.
+왼쪽 **메일·일정 연결 → Microsoft 365**에서 계정의 메일·일정을 조회하고 선택한 항목을 자료실에 가져옵니다. EML·ICS 파일은 선택한 파일의 모든 메일·일정 항목을 가져오며, 분석에 사용할 자료는 에이전트 프로필에서 따로 지정합니다. 본인의 Microsoft Entra 앱으로 읽기 연결하거나 `.eml`·`.ics` 파일을 사용할 수 있습니다. 예제 파일은 `data/examples/outlook/project-mail.eml`과 `project-calendar.ics`입니다. 자료를 프로젝트에 연결한 뒤 전문 에이전트 프로필의 참고 자료로 선택하세요.
 
 Microsoft 연결은 위임된 **device authorization flow**입니다. 본인 또는 조직이 승인한 앱을 사용합니다.
 
@@ -97,7 +126,7 @@ npm start
 
 ## 개인 작업 공간과 계정 범위
 
-현재는 개인 전용 비서입니다. 온라인에서는 방문자별 작업 공간을 분리합니다. 회원가입·사용자별 영속 DB 연동은 향후 확장 범위이며, 현재 로그인 계정 기반의 여러 기기 동기화나 영구 복원은 제공하지 않습니다. Microsoft 연결은 해당 방문 세션에서 원문을 읽는 권한으로, Workmate 회원가입이 아닙니다.
+현재는 개인 전용 비서입니다. 온라인에서는 방문자별 작업 공간을 분리합니다. 회원가입·사용자별 영속 DB 연동은 향후 확장 범위이며, 현재 로그인 계정 기반의 여러 기기 동기화나 영구 복원은 제공하지 않습니다. Google·Microsoft 연결은 해당 방문 세션에서 원문을 읽는 권한으로, Workmate 회원가입이 아닙니다.
 
 무료 Render의 로컬 파일은 재시작·재배포·휴면 시 보존되지 않고 무료 Postgres는 생성 후 30일 만료됩니다. 계정과 영속 DB를 붙이려면 별도 지속 저장소와 인증 제공자를 연결해야 합니다. 현재는 필요한 자료를 내려받거나 로컬 설치형을 이용하세요. [무료 호스팅 보관 범위](https://render.com/docs/free)
 
@@ -122,7 +151,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
 
 ## v0.4 개인 비서와 티켓 결과서
 
-- **모아:** 모든 웹 화면 오른쪽 아래에서 빠른 대화와 업무 알림을 제공합니다. `Ctrl+Shift+Space`로 열고, 확장 버튼으로 별도 작은 브라우저 창을 엽니다. 이름, 알림 잠시 끄기, 30분 미루기를 설정할 수 있습니다. v0.7의 Windows Mini는 위 설명과 같이 브라우저 밖에서도 실행합니다.
+- **모아:** 모든 웹 화면 오른쪽 아래에서 빠른 대화와 업무 알림을 제공합니다. `Ctrl+Shift+Space`로 열고, 확장 버튼으로 별도 작은 브라우저 창을 엽니다. 이름, 알림 잠시 끄기, 30분 미루기를 설정할 수 있습니다. v0.8의 Windows Mini는 위 설명과 같이 브라우저 밖에서도 실행합니다.
 - **오늘 계획:** 프로젝트와 가용 시간 안에서 기한·우선순위·보완 대기를 기준으로 업무를 배치합니다. 시간 블록의 완료, 업무 상세 연결, 집중 시작, 캘린더 가져오기용 ICS 다운로드를 제공합니다. 규칙 기반 배치이며 외부 캘린더의 빈 시간을 읽지는 않습니다.
 - **집중 시간:** 업무별 타이머 시작·일시 정지·재개·완료와 집중 기록을 저장합니다. 집중 중에는 말풍선 알림이 잠시 멈춥니다. 타이머 완료와 실제 업무 완료는 별도로 관리합니다.
 - **개발 티켓 · 결과서:** 앱, 요구사항, 요청자·메일, 개발 담당자, 연결 개발 작업과 인수 기준을 저장합니다. 티켓을 선택하면 현재 앱 소스 사본을 실제 브라우저에서 실행하고 항목별 화면 증거를 만듭니다.
