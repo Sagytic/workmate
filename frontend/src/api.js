@@ -23,6 +23,7 @@ export const post = (path, body = {}) => api(path, { method: 'POST', body });
 export const asText = value => value === null || value === undefined ? '' : typeof value === 'string' ? value : typeof value === 'object' ? JSON.stringify(value) : String(value);
 export const dateTime = value => {
   if (!value) return '아직 실행 전';
+  if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return `${Number(value.slice(5, 7))}. ${Number(value.slice(8, 10))}. · 종일`;
   const date = new Date(value);
   return Number.isNaN(date.getTime()) ? asText(value) : date.toLocaleString('ko-KR', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'Asia/Seoul' });
 };

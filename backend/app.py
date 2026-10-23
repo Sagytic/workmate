@@ -35,12 +35,14 @@ async def lifespan(app):
     store.seed()
     from .tickets import seed_tickets
     seed_tickets(store)
+    from .agent_hub import seed_agent_hub
+    seed_agent_hub(store)
     engine.start()
     yield
     engine.stop()
 
 
-app = FastAPI(title="Workmate", version="0.5.0", lifespan=lifespan)
+app = FastAPI(title="Workmate", version="0.6.0", lifespan=lifespan)
 PUBLIC_HOST = os.environ.get('RENDER_EXTERNAL_HOSTNAME') or os.environ.get('WORKMATE_PUBLIC_HOST', '')
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "testserver"] + ([PUBLIC_HOST] if HOSTED and PUBLIC_HOST else []))
 
@@ -135,6 +137,8 @@ def validate_due(value):
         due = datetime.fromisoformat(value)
     except ValueError:
         raise ValueError("기한은 ISO 날짜·시간 형식이어야 합니다.")
+    if len(value) == 10 and value[4] == '-' and value[7] == '-':
+        return due.date().isoformat()
     if due.tzinfo is None:
         due = due.replace(tzinfo=KST)
     return due.astimezone(KST).isoformat(timespec="seconds")
@@ -142,7 +146,7 @@ def validate_due(value):
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "mode": planner.mode, "llm_configured": planner.configured, "version": "0.5.0", "service": "workmate", "hosted": HOSTED}
+    return {"ok": True, "mode": planner.mode, "llm_configured": planner.configured, "version": "0.6.0", "service": "workmate", "hosted": HOSTED}
 
 
 @app.get("/api/state")
@@ -150,7 +154,9 @@ def state():
     from .desk_api import project_summary, demo_status, REFERENCES
     all_tasks = store.all("tasks")
     tasks = [t for t in all_tasks if not t.get("archived")]
+    hub_runs = store.all('hub_runs')
     return {"hosted": HOSTED, "mode": planner.mode, "llm_configured": planner.configured, "llm": planner.public_status(), "agents": AGENTS,
+            "hub_summary": {"agents":sum(not a.get('archived') for a in store.all('hub_agents')), "runs":len(hub_runs), "active":sum(r['status'] in ('queued','running') for r in hub_runs), "completed":sum(r['status']=='completed' for r in hub_runs)},
             "documents": store.all("documents"), "examples": store.all("examples"),
             "projects": project_summary(store), "demo": demo_status(store), "references": REFERENCES,
             "archived_tasks": [t for t in all_tasks if t.get("archived")],
@@ -212,14 +218,21 @@ def chat(body: ChatRequest):
     history = list(reversed(store.all("messages")[:12]))
     store.put("messages", {"id": uid("message"), "role": "user", "content": body.message, "created_at": now()})
     plan = planner.plan(body.message, store.all("memories"), store.all("apps"), history=history,
-                        tasks=[t for t in store.all("tasks") if not t.get("archived")], uploads=store.all("uploads"), documents=store.all('documents'))
+                        tasks=[t for t in store.all("tasks") if not t.get("archived")], uploads=store.all("uploads"), documents=store.all('documents'),
+                        hub_agents=[a for a in store.all('hub_agents') if not a.get('archived')])
     def respond(reply, **extra):
         item = {"id": uid("message"), "role": "assistant", "content": reply, "created_at": now()}
         if extra.get("task_id"):
             item["task_id"] = extra["task_id"]
+        if extra.get('hub_run_id'):
+            item['hub_run_id'] = extra['hub_run_id']
         store.put("messages", item)
         return {"reply": reply, **extra, "mode": planner.mode, "history": list(reversed(store.all("messages")[:100]))}
     action = plan["action"]
+    if action == 'agent':
+        from .agent_hub import start_run
+        run = start_run(sys.modules[__name__], plan.get('agent_id'), body.message)
+        return respond('전문 에이전트에게 요청을 전달했습니다. 실행 단계와 근거, 후속 업무를 에이전트 스튜디오에서 확인하세요.', hub_run_id=run['id'])
     if action in ("brief", "answer"):
         return respond(plan.get("reply") or engine.brief())
     if action == "remember":
@@ -435,6 +448,8 @@ from .companion import install_companion
 from .tickets import install_tickets
 install_companion(app, sys.modules[__name__])
 install_tickets(app, sys.modules[__name__])
+from .agent_hub import install_agent_hub
+install_agent_hub(app, sys.modules[__name__])
 
 DIST = CODE_ROOT / "frontend" / "dist"
 if DIST.exists():

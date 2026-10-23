@@ -1,6 +1,29 @@
-# Workmate v0.4 implementation contract
+# Workmate v0.6 implementation contract
 
-This describes the implemented local application, not a roadmap. Korean UI, a single local user, synthetic fixtures, actual tool execution and persisted task outcomes. Never turn an unverified scope, unavailable browser, or external model error into a fabricated success.
+This describes the implemented local and hosted application. Korean UI, personal workspaces, supplied fixtures, actual tool execution and persisted task outcomes. Local mode is a single user; hosted mode isolates each visitor session. Never turn an unverified scope, unavailable browser, or external model error into a fabricated success.
+
+## v0.6 specialist studio contract
+
+`backend/agent_hub.py` provides `seed_agent_hub(store)`, `install_agent_hub(app, ctx)`, and the shared chat/API entry point `start_run(ctx, agent_id, request)`. Collections are `hub_agents`, `hub_runs`, and `hub_missions`. Four built-in kinds are `meeting`, `decision`, `radar`, `reflection`; they use a fixed visible pipeline, not unrestricted ReAct execution.
+
+- Profile fields: `id,name,description,instructions,kind,document_ids,project,use_memory,builtin,archived,created_at,updated_at`. Names max 80 characters, instructions 4,000, selected document IDs 20; no more than 40 unarchived profiles. Archive hides a profile without deleting its old runs.
+- `POST /api/agent-hub/agents` creates a profile; `PATCH` and `DELETE /api/agent-hub/agents/{id}` update/archive it. IDs must resolve. A selected document must match an explicitly selected project.
+- `POST /api/agent-hub/agents/{id}/run` accepts `{request}` (1–12,000 characters); `GET /api/agent-hub/runs/{id}` returns full state. Chat dispatch uses the same validation/capacity path and returns `hub_run_id`.
+- `GET /api/agent-hub` returns `{agents,runs,missions,kinds}`. Runs are compact summaries, capped at 100; missions are capped at 30. Full evidence is available through run detail.
+- `POST /api/agent-hub/missions` accepts `{name?,request,agent_ids:[1..4]}`. Every selected profile and its context is validated before any run is queued. A mission contains `{id,name,request,agent_ids,run_ids,created_at}`. Read with `GET /api/agent-hub/missions/{id}`. Its derived status is `queued|running|completed|partial|failed`, with actual child summaries and completion/failure counts. No coordinator occupies a pool worker waiting for other workers. Each child retains its own result and import endpoints.
+- Each run snapshots the profile, request, allowed sources and metrics before entering `ctx.engine.pool`. Steps are `자료 수집`, `전문 분석`, `근거 확인`, `결과 전달`, with `pending|running|completed|failed`, timestamps and actual events. Run status is `queued|running|completed|failed`; `mode` is `llm|rules`. The connected Planner performs one structured `_complete` call per specialist; with no configured API, deterministic extraction/aggregation runs instead. API errors fail honestly. Startup marks interrupted runs failed.
+- Document selection is explicit, or the selected project's documents when IDs are empty. Blank project plus no documents reads no library documents. Task records are included for the selected project, or all non-archived tasks for an unscoped radar/reflection. Meeting/decision without a project read no tasks. Memory is opt-in, includes at most 20 records (global or matching project). Document excerpts are capped at 6,000 characters, detailed tasks at 100, total context text at 64,000 characters; truncation is reported. Metrics count the full scoped task set. Recent completion uses actual `completed_at` within the captured seven-day interval, never `updated_at`.
+- Source records contain `{id,title,type,excerpt}` with optional frozen metadata. Result has `summary`, `decisions`, `actions`, `insights`, `risks`, `memory_suggestions`, `alternatives`, `followup_questions`. Evidence-bearing items carry `evidence_id,evidence_quote,evidence_verified`. Unresolvable IDs or quotations are cleared and recorded in `verification.warnings`; unsupported owners/deadlines are cleared. Exact quote presence is not a semantic entailment check. Date-only deadlines stay dates and become overdue on the next local day.
+- `POST /api/agent-hub/runs/{id}/actions` accepts `{indices}` and returns `{created,existing,tasks}`. Only selected completed-run results create manual `todo` tasks. Stable run/index identities make repeated import idempotent.
+- `POST /api/agent-hub/runs/{id}/memory` accepts `{indices}` and returns `{created,existing,conflicts,memories}`. Unverified quotes cannot be imported. Same-name/same-value memory is reused; different values preserve the existing memory and return a conflict. No silent overwrite and no import during analysis.
+- `GET /api/agent-hub/runs/{id}/report.html` is a self-contained HTML attachment. It escapes user/model/source text and sends a restrictive CSP. A completed run is required. Existing reports do not reread edited/deleted source records.
+- Capacity counts active tasks, UAT runs and hub runs: 4 hosted / 12 local. A mission must fit all requested slots before starting. Specialist execution has no host-code, network browsing, outbound messaging or arbitrary write tools. Only the configured LLM call may leave the workspace; scoped source excerpts are sent to that provider when enabled.
+
+## v0.5 personal API, hosted service and desktop Mini
+
+- `/api/connection/config` GET returns public endpoint/model/status metadata without keys; POST validates a candidate with an actual model request before applying it; DELETE clears the running connection. Local optional persistence writes `.env`; hosted sessions disallow persistence. A key is not reused when changing endpoint. Hosted destinations are allowlisted public OpenAI-compatible providers. Local custom HTTPS and loopback HTTP providers are supported.
+- `backend.cloud:app` serves isolated visitor modules, SQLite stores, files and memory-only API settings. Owner `.env`, DB and private work history are excluded from the deployment. Secure HttpOnly SameSite cookies identify public sessions; idle sessions expire after one hour. Hosting is ephemeral across server restarts/redeploys. Public limits are eight visitor sessions with per-session request/model-call throttles.
+- Electron Windows Mini runs independently of the browser, with an owl window, chat panel, tray, speech bubbles, always-on-top option, optional Windows login startup and `Ctrl+Alt+Space`. Closing a panel hides it; tray Quit exits. It reuses an existing local server or starts/owns a local server. The renderer is sandboxed, context isolated and has no Node integration; a narrow preload exposes validated companion actions. It does not turn off-PC time into running background work.
 
 ## Runtime and persistence
 
@@ -9,7 +32,7 @@ This describes the implemented local application, not a roadmap. Korean UI, a si
 - Persisted collections: tasks, messages, memories, apps, records, workflows, notifications, uploads, documents, projects, examples, meta.
 - Artifacts: `data/artifacts/{task_id}/attempt-{NN}/`; repair attempts use a separate child directory. Artifact names are relative to the task directory and retain nested paths.
 - Timestamps use Korea Standard Time. The in-process scheduler checks about every 15 seconds. It requires a running app server, does not backfill every missed interval, and is not an OS/background service.
-- On restart, interrupted queued/running tasks are marked failed. Completed state and files persist. No automatic retention/deletion policy is implemented.
+- On restart, interrupted queued/running tasks are marked failed. Completed state and files persist. Local data has no automatic retention policy; hosted visitor sessions follow the one-hour idle expiry described above.
 - Bind locally. Host/origin restrictions are not multi-user authentication. There is no company mail/calendar/ERP/financial-system integration.
 
 ## Shared entities
@@ -175,7 +198,7 @@ External prompts may include current request, recent conversation, memories, app
 
 ## UI and verification status
 
-Use a clean light charcoal/white Korean workspace. Screens: 오늘의 업무, 업무 요청, 파일 보관함, Excel 검증, 업무앱 제작, 개발·UAT, 업무 자동화, 내 업무 기억. Include actual connection diagnostics, loading/error/empty states, task detail/events/artifacts, batch file results, registration-input checkpoint, archive/retry/ZIP and dynamic app fields. Poll every 2 seconds while tasks run, otherwise 10 seconds. Connection mode is described as LLM or rule-based; no fake result buttons.
+Use a clean Korean workspace with dark mode by default and an optional light theme. Screens: 오늘의 업무, 업무 요청, 파일 보관함, Excel 검증, 업무앱 제작, 개발·UAT, 업무 자동화, 내 업무 기억. Include actual connection diagnostics, loading/error/empty states, task detail/events/artifacts, batch file results, registration-input checkpoint, archive/retry/ZIP and dynamic app fields. Poll every 2 seconds while tasks run, otherwise 10 seconds. Connection mode is described as LLM or rule-based; no fake result buttons.
 
 Python regression tests, generated-source real-browser UAT and real-server API/SQLite browser integration are separate checks. `WORKMATE_BROWSER_TEST=1` enables browser regression tests; `npm run test:browser` requires a running server and creates synthetic data. v0.2 validation on 2026-10-22: **64 regression tests passed; 11 real API/browser scenarios; 5 live LLM checks; 4 dynamic live pipeline stages including 12 browser UAT scenarios**. See verification/summary.json and separate reports; these scopes overlap and must not be summed. Use recorded evidence for each run; do not reuse v0.1 test counts.
 
@@ -221,7 +244,7 @@ Personal companion data use persisted collections `preferences` (companion key),
 | GET `/uat/runs/{id}/files/{filename}` | Serve only whitelisted artifacts under the run folder |
 | POST `/uat/runs/{id}/decision` | Explicit reviewer decision and comment; preserve audit history |
 
-Priority ranking uses actual due times, priority and waiting/failure states. The planner excludes queued/running tasks and does not read external calendar availability. Focus and plan completion do not imply business task completion. Timer completion requires the app process to be running or a subsequent state read. Frontend notifications are in-page speech bubbles; the mini companion is a separate browser window. Neither is an OS-wide agent or native push service.
+Priority ranking uses actual due times, priority and waiting/failure states. The planner excludes queued/running tasks and does not read external calendar availability. Focus and plan completion do not imply business task completion. Timer completion requires the app process to be running or a subsequent state read. The original v0.4 frontend notifications are in-page speech bubbles with an optional separate browser window. The v0.5 desktop Mini adds independent native windows and a tray, as described above; notifications still require a running local app/server.
 
 Ticket criteria map to executed supported browser cases. Missing or failed coverage prevents a passing acceptance summary. UAT runs use an isolated in-memory API around a frozen source copy; they do not mutate the business app's persisted records. Source SHA-256, app version, request snapshot, executor and KST times are saved. Every actual browser check has a PNG artifact and execution timestamp. Existing run output remains stable after ticket or app changes. Interrupted runs are marked failed on process startup.
 

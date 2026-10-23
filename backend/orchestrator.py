@@ -28,6 +28,10 @@ class Engine:
         self.stopping = threading.Event()
 
     def start(self):
+        for run in self.store.all('hub_runs'):
+            if run.get('status') in ('running','queued'):
+                steps = [{**step, 'status':'failed' if step.get('status') in ('running','queued') else step.get('status'), 'detail':'서버 재시작으로 중단되었습니다.' if step.get('status') in ('running','queued') else step.get('detail','')} for step in run.get('steps',[])]
+                self.store.update('hub_runs',run['id'],status='failed',steps=steps,error='서버 재시작으로 중단되었습니다. 다시 실행하세요.',completed_at=now())
         for run in self.store.all('uat_runs'):
             if run.get('status') in ('running', 'queued'):
                 self.store.update('uat_runs', run['id'], status='failed', error='서버 재시작으로 중단되었습니다. 다시 실행하세요.', passed=False)
@@ -310,14 +314,25 @@ class Engine:
             "enabled": True, "last_run_at": None, "created_at": now(), "trigger": "manual"})
 
     def check_notifications(self):
+        from .desk_api import date_only_deadline, parsed_time
         count = 0
         current = datetime.now(KST)
         for task in self.store.all("tasks"):
             if task["status"] in ("completed", "failed") or task.get("archived") or not task.get("due_at"):
                 continue
-            due = datetime.fromisoformat(task["due_at"])
-            if due.tzinfo is None:
-                due = due.replace(tzinfo=KST)
+            due = parsed_time(task["due_at"])
+            if due is None:
+                continue
+            if date_only_deadline(task['due_at']):
+                # A date-only deadline applies throughout its calendar day.
+                # Preserve that precision in both the trigger and message.
+                if due.date() > current.date():
+                    continue
+                phase = 'overdue' if due.date() < current.date() else 'upcoming'
+                count += self.store.notify(task['id'] + ':' + phase + ':' + task['due_at'],
+                                          '기한이 되었습니다' if phase == 'overdue' else '오늘 마감',
+                                          f"{task['title']} · 기한 {due.strftime('%m/%d')} · 현재 {task['status']}", task['id'])
+                continue
             if due <= current + timedelta(hours=2):
                 phase = "overdue" if due <= current else "upcoming"
                 count += self.store.notify(task["id"] + ":" + phase + ":" + task["due_at"],

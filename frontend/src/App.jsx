@@ -6,8 +6,11 @@ import { HomeV2, ConversationPage, ExcelV2, FilesPage, FilePicker as FileInput, 
 import {Companion,TodayPlan} from './companion';
 import {TicketsPage} from './tickets';
 import {ConnectionSettings} from './connection';
+import {AgentHub} from './agenthub';
+import './studio-integration.css';
 
 const NAV = [
+  ['agents', '에이전트 스튜디오', Boxes, '나만의 에이전트와 협업 미션'],
   ['conversation', '업무 요청', History, '요청과 답변 기록'],
   ['files', 'Excel 파일', FolderOpen, '업로드 파일과 예제'],
   ['documents', '자료실', BookOpen, '근거 자료'],
@@ -41,6 +44,7 @@ function Modal({ title, subtitle, onClose, wide, children }) {
 
 export default function App() {
   const [tab, setTab] = useState(initialTab);
+  const [hubRunId,setHubRunId]=useState(()=>new URLSearchParams(window.location.search).get('hub_run'));
   const [theme,setTheme]=useState(()=>document.documentElement.dataset.theme==='light'?'light':'dark');
   useEffect(()=>{document.documentElement.dataset.theme=theme;document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='dark'?'#11151c':'#f7f8fa');try{localStorage.setItem('workmate-theme',theme);}catch{}},[theme]);
   useEffect(()=>{const sync=e=>{if(e.key==='workmate-theme')setTheme(e.newValue==='light'?'light':'dark');};window.addEventListener('storage',sync);return()=>window.removeEventListener('storage',sync);},[]);
@@ -107,7 +111,8 @@ export default function App() {
   const currentNav = NAV.find(n => n[0] === tab) || NAV[0];
   const openDocument = id => { if(new URLSearchParams(window.location.search).get('companion')==='1'){window.open(`/?document=${encodeURIComponent(id)}#documents`,'workmate-main');return;} setDocumentId(id); closeTask(); navigate('documents'); };
   const prepareExample = example => { setPrepared({agent:example.agent,input:example.input||{},project:example.project,title:example.title}); const target=({excel:'excel',builder:'builder',developer:'developer',automation:'automation',knowledge:'analysis',analyst:'analysis',reporter:'analysis',assistant:'conversation'})[example.agent]||'conversation'; navigate(target); notify('예제 입력을 준비했습니다. 내용을 확인하고 실행하세요.'); };
-  const props = { state, refresh, busy, perform, notify, showTask, startTask, navigate, connected, prepared, setPrepared, documentId, setDocumentId, openDocument, prepareExample };
+  const showHubRun = id => {if(new URLSearchParams(window.location.search).get('companion')==='1'){window.open(`/?hub_run=${encodeURIComponent(id)}#agents`,'workmate-main');return;} setHubRunId(id);closeTask();navigate('agents');};
+  const props = { state, showHubRun, refresh, busy, perform, notify, showTask, startTask, navigate, connected, prepared, setPrepared, documentId, setDocumentId, openDocument, prepareExample };
 
   if(new URLSearchParams(window.location.search).get('companion')==='1')return <>
     <Companion {...props} mini/>
@@ -122,7 +127,7 @@ export default function App() {
       <div className="workspace-switch"><span className="workspace-avatar">W</span><div><strong>내 업무 워크스페이스</strong><span>개인 워크스페이스</span></div><ShieldCheck size={16}/></div>
       <span className="nav-caption">업무 공간</span>
       <nav>{NAV.map(([id, label, Icon]) => <button key={id} aria-label={label} aria-current={tab===id?"page":undefined} className={`nav-item ${tab === id ? 'active' : ''}`} onClick={() => navigate(id)}><Icon size={19}/><span>{label}</span>{id === 'home' && state.stats?.waiting > 0 && <span className="nav-count">{state.stats.waiting}</span>}</button>)}</nav>
-      <div className="sidebar-bottom"><div className="local-note"><span className={`live-dot ${connected ? '' : 'offline'}`}/><strong>{connected ? (state.hosted?'온라인 워크스페이스 연결됨':'로컬 워크스페이스 연결됨') : '서버 연결 확인 중'}</strong><p>{state.hosted?'방문 세션별로 분리됩니다. 필요한 결과는 다운로드해 보관하세요.':'작업 이력과 결과를 이 기기에 보관합니다.'}</p></div><div className="profile"><span className="profile-avatar"><UserRound size={18}/></span><div><strong>내 업무 공간</strong><span>Workmate · v0.5</span></div></div></div>
+      <div className="sidebar-bottom"><div className="local-note"><span className={`live-dot ${connected ? '' : 'offline'}`}/><strong>{connected ? (state.hosted?'온라인 워크스페이스 연결됨':'로컬 워크스페이스 연결됨') : '서버 연결 확인 중'}</strong><p>{state.hosted?'방문 세션별로 분리됩니다. 필요한 결과는 다운로드해 보관하세요.':'작업 이력과 결과를 이 기기에 보관합니다.'}</p></div><div className="profile"><span className="profile-avatar"><UserRound size={18}/></span><div><strong>내 업무 공간</strong><span>Workmate · v0.6</span></div></div></div>
     </aside>
     <div className="main-shell">
       <header className="topbar"><div className="breadcrumb"><button className="icon-button mobile-menu" onClick={() => setSidebarOpen(true)} aria-label="메뉴 열기"><Menu size={21}/></button><span>워크스페이스</span><ChevronRight size={14}/><strong>{currentNav[1]}</strong></div><div className="topbar-actions"><button className="icon-button theme-toggle" aria-label="화면 테마 전환" title={theme==='dark'?'라이트 모드로 전환':'다크 모드로 전환'} aria-pressed={theme==='light'} onClick={()=>setTheme(theme==='dark'?'light':'dark')}>{theme==='dark'?<Sun size={15}/>:<Moon size={15}/>}</button><button className="global-search-trigger" onClick={() => setSearchOpen(true)} aria-label="전체 검색 열기"><Search size={15}/><span>검색</span><kbd>Ctrl K</kbd></button><button className={`mode-chip ${state.llm?.status === 'connected' ? 'live' : ''}`} onClick={() => setConnectionOpen(true)} title="연결 상태 확인"><span/>{!connected ? '연결 대기' : state.llm?.status === 'connected' ? 'API 연결됨' : state.llm?.status === 'error' ? '연결 오류' : state.llm_configured ? '모델 설정됨' : '규칙 기반'}</button><button className="icon-button bell-button" onClick={() => setNotificationsOpen(!notificationsOpen)} aria-label={`알림 ${unread}개`}><Bell size={20}/>{unread > 0 && <i>{unread}</i>}</button></div>
@@ -131,7 +136,8 @@ export default function App() {
       <main className="main-content">
         {connectionError && <div className="connection-alert"><AlertTriangle size={17}/><span>{connectionError}</span><button onClick={refresh}>다시 연결</button></div>}
         {loading ? <div className="initial-loading"><Loader2 className="spin" size={26}/><p>내 업무 공간을 불러오고 있어요</p></div> : <>
-          {tab === 'home' && <><TodayPlan {...props}/><HomeDesk {...props}/></>}
+          {tab === 'home' && <><TodayPlan {...props}/><section className="hub-home-strip"><div><span>AGENT STUDIO</span><h3>하나의 요청, 여러 전문 에이전트.</h3><p>회의 후속 조치 · 의사결정 · 프로젝트 레이더 · 주간 회고</p></div><button className="button secondary" onClick={()=>navigate('agents')}>에이전트에게 맡기기 <ArrowRight size={15}/></button></section><HomeDesk {...props}/></>}
+          {tab === 'agents' && <AgentHub {...props} initialRunId={hubRunId}/>}
           {tab === 'excel' && <ExcelV2 {...props}/>}
           {tab === 'builder' && <BuilderPage {...props} openRecords={setRecordsApp}/>}
           {tab === 'developer' && <DeveloperPage {...props}/>}
@@ -144,7 +150,7 @@ export default function App() {
           {tab === 'analysis' && <AnalysisPage {...props}/>}
           {tab === 'examples' && <ExamplesPage {...props}/>}
         </>}
-        <footer className="page-footer"><span><ShieldCheck size={13}/> 로컬 실행 · 실제 처리 결과와 증빙을 저장합니다</span><span>Workmate · v0.5</span></footer>
+        <footer className="page-footer"><span><ShieldCheck size={13}/> 실행 단계 · 근거 · 결과물을 함께 보관합니다</span><span>Workmate · v0.6</span></footer>
       </main>
     </div>
     <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} {...props}/>

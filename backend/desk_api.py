@@ -30,6 +30,19 @@ def parsed_time(value):
         return None
 
 
+def date_only_deadline(value):
+    """A calendar deadline must not acquire an invented midnight cutoff."""
+    return isinstance(value, str) and bool(re.fullmatch(r'\d{4}-\d{2}-\d{2}', value))
+
+
+def deadline_overdue(value, current):
+    due = parsed_time(value)
+    if due is None:
+        return False
+    current = current.replace(tzinfo=KST) if current.tzinfo is None else current.astimezone(KST)
+    return due.date() < current.date() if date_only_deadline(value) else due < current
+
+
 def project_summary(store):
     tasks = [t for t in store.all('tasks') if not t.get('archived')]
     docs = store.all('documents')
@@ -40,7 +53,7 @@ def project_summary(store):
     for name in sorted(n for n in names if n):
         group = [t for t in tasks if t.get('project') == name]
         open_tasks = [t for t in group if t['status'] != 'completed']
-        overdue = [t for t in open_tasks if parsed_time(t.get('due_at')) and parsed_time(t['due_at']) < current]
+        overdue = [t for t in open_tasks if deadline_overdue(t.get('due_at'), current)]
         stale = [t for t in open_tasks if parsed_time(t.get('updated_at')) and parsed_time(t['updated_at']) < current - timedelta(days=7)]
         risk_ids = {t['id'] for t in overdue + stale + [t for t in open_tasks if t['status'] in ('waiting_input', 'failed')]}
         result.append({**definitions.get(name, {}), 'id': definitions.get(name, {}).get('id', name), 'name': name,

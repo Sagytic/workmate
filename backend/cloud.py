@@ -31,7 +31,7 @@ LOCK = asyncio.Lock()
 
 
 def busy(module):
-    return any(t.get('status') in ('running', 'queued') for k in ('tasks','uat_runs') for t in module.store.all(k))
+    return any(t.get('status') in ('running', 'queued') for k in ('tasks','uat_runs','hub_runs') for t in module.store.all(k))
 
 
 def destroy(sid, entry):
@@ -69,6 +69,8 @@ def make_visitor(sid):
         seed_demo(root, module.store)
         seed_showcase(root, module.store)
         seed_tickets(module.store)
+        from .agent_hub import seed_agent_hub
+        seed_agent_hub(module.store)
         module.engine.start()
         return {'module':module, 'touched':time.monotonic(), 'requests':deque(), 'models':deque()}
     except Exception:
@@ -107,7 +109,7 @@ async def headers(request, call_next):
 
 @app.get('/api/health')
 def health():
-    return {'ok':True, 'service':'workmate', 'version':'0.5.0', 'hosted':True}
+    return {'ok':True, 'service':'workmate', 'version':'0.6.0', 'hosted':True}
 
 
 class VisitorRouter:
@@ -146,11 +148,12 @@ class VisitorRouter:
                 new = True
             entry = VISITORS[sid]
             entry['touched'] = now
-            if scope['method']=='POST' and any(x in scope['path'] for x in ('/tasks','/uat','/apps','/workflows')):
-                active = sum(t.get('status') in ('running','queued') for k in ('tasks','uat_runs') for t in entry['module'].store.all(k))
+            if scope['method']=='POST' and any(x in scope['path'] for x in ('/tasks','/uat','/apps','/workflows','/agent-hub','/chat')):
+                active = sum(t.get('status') in ('running','queued') for k in ('tasks','uat_runs','hub_runs') for t in entry['module'].store.all(k))
                 if active >= 4:
                     return await JSONResponse({'detail':'진행 중인 실행을 마친 후 다시 요청하세요.'},429)(scope,receive,send)
-            lane = entry['models'] if scope['path'] in ('/api/chat','/api/connection/config','/api/connection/test') and scope['method']=='POST' else entry['requests']
+            model_request = scope['path'] in ('/api/chat','/api/connection/config','/api/connection/test') or (scope['path'].startswith('/api/agent-hub/') and (scope['path'].endswith('/run') or scope['path'].endswith('/missions')))
+            lane = entry['models'] if model_request and scope['method']=='POST' else entry['requests']
             while lane and now-lane[0] > 60: lane.popleft()
             if len(lane) >= (10 if lane is entry['models'] else 120):
                 return await JSONResponse({'detail':'요청이 많습니다. 1분 후 다시 실행하세요.'},429)(scope,receive,send)

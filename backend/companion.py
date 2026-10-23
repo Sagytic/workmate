@@ -4,7 +4,7 @@ from fastapi import HTTPException
 from fastapi.responses import Response
 from pydantic import BaseModel, Field
 from .store import now, uid, KST, LOCK
-from .desk_api import parsed_time
+from .desk_api import deadline_overdue, parsed_time
 
 
 class Preferences(BaseModel):
@@ -47,7 +47,7 @@ def priority_tasks(store, project='', owner=''):
         due = parsed_time(task.get('due_at'))
         score, reasons = 0, []
         if due:
-            if due < current:
+            if deadline_overdue(task.get('due_at'), current):
                 score += 100
                 reasons.append('기한 지남')
             elif due.date() == current.date():
@@ -99,6 +99,7 @@ def install_companion(app, ctx):
         completed = [t for t in tasks if t['status'] == 'completed' and parsed_time(t.get('completed_at')) and parsed_time(t['completed_at']).date() == today]
         unread = [n for n in ctx.store.all('notifications') if not n.get('read') and not n.get('read_at')]
         runs = ctx.store.all('uat_runs')
+        hub_runs = ctx.store.all('hub_runs')
         nudges = [{'id': n['id'], 'title': n['title'], 'body': n['message'], 'task_id': n.get('task_id'), 'type': 'notification'} for n in unread[:4]]
         if items:
             first = items[0]
@@ -106,6 +107,10 @@ def install_companion(app, ctx):
         for run in runs[:2]:
             if run['status'] == 'completed':
                 nudges.insert(0, {'id': 'uat_' + run['id'], 'title': 'UAT 결과가 준비됐어요', 'body': run['ticket']['title'], 'route': 'tickets', 'type': 'uat'})
+        for run in hub_runs[:2]:
+            if run.get('status') == 'completed':
+                nudges.insert(0, {'id':'hub_'+run['id'], 'title':run.get('agent_snapshot',{}).get('name','전문 에이전트')+' 결과가 준비됐어요',
+                                 'body':run.get('result',{}).get('summary','실행 결과와 다음 업무를 확인하세요.')[:180], 'route':'agents', 'hub_run_id':run['id'], 'type':'agent'})
         return {'preferences': prefs, 'priorities': items[:8], 'nudges': nudges,
                 'focus': next((f for f in ctx.store.all('focus') if f['status'] in ('active', 'paused')), None),
                 'focus_history': ctx.store.all('focus')[:10], 'plan': ctx.store.get('plans', today.isoformat()),
