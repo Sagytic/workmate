@@ -2,6 +2,7 @@
 import json
 import sqlite3
 import uuid
+from contextlib import contextmanager
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from threading import RLock
@@ -26,8 +27,17 @@ class Store:
             db.execute("PRAGMA journal_mode=WAL")
             db.execute("CREATE TABLE IF NOT EXISTS objects (collection TEXT NOT NULL, id TEXT NOT NULL, body TEXT NOT NULL, PRIMARY KEY(collection,id))")
 
+    @contextmanager
     def connect(self):
-        return sqlite3.connect(self.path, timeout=15)
+        # sqlite3.Connection's own context manager commits but does not close.
+        # Explicit closure is required before expiring a visitor workspace on
+        # Windows and avoids retaining a descriptor per MCP authorization read.
+        connection = sqlite3.connect(self.path, timeout=15)
+        try:
+            with connection:
+                yield connection
+        finally:
+            connection.close()
 
     def get(self, collection, object_id):
         with self.connect() as db:

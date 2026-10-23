@@ -1,10 +1,21 @@
-# Workmate v0.8 · 개인비서와 업무 실행 플랫폼
+# Workmate v0.9 · 브라우저 밖에서도, 내 곁의 비서
 
-일을 기억하고 다음 행동을 챙기는 개인 업무 플랫폼입니다. 온라인 워크스페이스와 Windows 설치형으로 사용할 수 있습니다. 업무 요청을 기억하고, Excel을 검사하고, 실제 저장되는 업무앱을 만들고, 변경 사항을 브라우저에서 검증해 결과물까지 남깁니다. 대화·작업 상태·파일·앱 데이터가 하나의 워크스페이스에 연결됩니다.
+Windows Mini가 바탕화면과 트레이에 머무르며 빠른 대화와 업무 알림을 제공합니다. `Ctrl+Alt+Space`로 열고, 창을 닫아도 곁에 남습니다. 개인 업무의 기억·메일·일정·Excel·UAT를 웹 워크스페이스에서 실행하고, 선택한 기본·맞춤 에이전트와 문서·업무앱을 MCP로 다른 AI 도구에 연결합니다. Mini와 로컬 서버가 실행되는 동안 사용할 수 있습니다.
 
-[워크스페이스 열기](https://workmate-otpo.onrender.com/) · [서비스 소개와 영상](https://sagytic.github.io/workmate/) · [설치·개인 API 사용 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html) · [Windows Mini와 실행 패키지](https://github.com/Sagytic/workmate/releases/tag/v0.8.0)
+[워크스페이스 열기](https://workmate-otpo.onrender.com/) · [서비스 소개와 영상](https://sagytic.github.io/workmate/) · [설치·개인 API 사용 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html) · [Windows Mini와 실행 패키지](https://github.com/Sagytic/workmate/releases/tag/v0.9.0)
 
-## v0.8 개인 비서 데스크와 Google 읽기 연결
+## 바탕화면 Mini와 MCP 연결
+
+- **Windows Mini:** 독립 앱, 항상 위 표시, 빠른 대화, 말풍선 알림, 트레이, 전역 단축키, 선택 가능한 Windows 로그인 시 시작.
+- **MCP 연결:** Streamable HTTP와 Bearer 키로 선택한 기본·맞춤 에이전트를 실행하고 결과를 조회합니다. 문서는 리소스로, 업무앱은 구조·기록 읽기 도구로 제공합니다. Excel 검사는 허용한 파일만 사용합니다.
+- **선택한 범위:** 공개할 항목과 만료를 고릅니다. 기본은 요청문만 분석하며 내부 맥락은 따로 허용합니다. 공개 당시 프로필과 범위를 사용하고 키 재발급·철회·만료를 확인합니다.
+- **사용 환경:** Authorization 헤더를 설정할 수 있는 HTTP MCP 클라이언트가 필요합니다. 외부 OAuth 로그인은 제공하지 않습니다. 로컬 서버가 실행 중이어야 하며 온라인 연결은 방문 세션·서버 종료 시 사라집니다.
+
+MCP 서버 주소는 연결 화면에 표시됩니다. 접근 키를 URL에 넣지 말고 `Authorization: Bearer <접근 키>` 헤더에 설정하세요. 키는 원문을 한 번만 보여주고 서버에는 해시로 저장합니다. 모델 분석은 개인이 연결한 API를 사용합니다.
+
+[Mini·MCP 사용 영상](https://sagytic.github.io/workmate/Workmate_Mini와_MCP_활용흐름_v0.9.mp4) · [MCP 설정 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html#mcp) · [공식 SDK 연결 예제](scripts/mcp_client_example.py)
+
+## 개인 비서 데스크와 Google 읽기 연결
 
 왼쪽 **비서 데스크**에서 반복 업무를 이어갑니다. 기존 8개 전문 분야는 유지하며 아래 네 가지 동작을 연결합니다.
 

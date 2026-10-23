@@ -36,6 +36,12 @@ def busy(module):
 
 def destroy(sid, entry):
     entry['module'].engine.stop()
+    # Called for idle visitors: let a just-completed worker finish its final
+    # notification before deleting its SQLite file and publication keys.
+    entry['module'].engine.pool.shutdown(wait=True, cancel_futures=True)
+    scheduler = getattr(entry['module'].engine, 'scheduler', None)
+    if scheduler:
+        scheduler.join(timeout=5)
     entry['module'].planner.key = ''
     entry['module'].m365.close()
     entry['module'].google.close()
@@ -85,7 +91,8 @@ def make_visitor(sid):
 @asynccontextmanager
 async def lifespan(app):
     SESSIONS.mkdir(parents=True, exist_ok=True)
-    yield
+    async with mcp_gateway.run():
+        yield
     for sid, entry in list(VISITORS.items()):
         # Process exit discards in-memory keys. Do not delete active artifacts
         # while a worker could still be writing them.
@@ -113,7 +120,7 @@ async def headers(request, call_next):
 
 @app.get('/api/health')
 def health():
-    return {'ok':True, 'service':'workmate', 'version':'0.8.0', 'hosted':True}
+    return {'ok':True, 'service':'workmate', 'version':'0.9.0', 'hosted':True}
 
 
 class VisitorRouter:
@@ -179,4 +186,22 @@ class VisitorRouter:
         await entry['module'].app(scope, bounded_receive, session_send)
 
 
+def resolve_mcp(authorization):
+    """MCP may use an existing visitor only; it never creates a workspace."""
+    from .mcp_gateway import authenticate
+    stamp = time.monotonic()
+    for entry in list(VISITORS.values()):
+        if stamp - entry['touched'] > TTL:
+            continue
+        found = authenticate(entry['module'], authorization)
+        if found:
+            entry['touched'] = stamp
+            return found
+    return None
+
+
+from .mcp_gateway import Gateway
+mcp_gateway = Gateway(resolve_mcp, host)
+app.add_route('/mcp', mcp_gateway, methods=['GET', 'POST', 'DELETE', 'HEAD', 'OPTIONS', 'PUT', 'PATCH'])
+app.mount('/mcp', mcp_gateway)
 app.mount('/', VisitorRouter())

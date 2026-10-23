@@ -38,13 +38,17 @@ async def lifespan(app):
     from .agent_hub import seed_agent_hub
     seed_agent_hub(store)
     engine.start()
-    yield
+    if HOSTED:
+        yield
+    else:
+        async with mcp_gateway.run():
+            yield
     engine.stop()
     m365.close()
     google.close()
 
 
-app = FastAPI(title="Workmate", version="0.8.0", lifespan=lifespan)
+app = FastAPI(title="Workmate", version="0.9.0", lifespan=lifespan)
 PUBLIC_HOST = os.environ.get('RENDER_EXTERNAL_HOSTNAME') or os.environ.get('WORKMATE_PUBLIC_HOST', '')
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "testserver"] + ([PUBLIC_HOST] if HOSTED and PUBLIC_HOST else []))
 
@@ -58,7 +62,11 @@ async def local_only_mutations(request: Request, call_next):
         allowed = {'https://' + PUBLIC_HOST}
     if request.method not in ("GET", "HEAD", "OPTIONS") and origin and origin not in allowed:
         return JSONResponse({"detail": "이 로컬 앱에서 시작한 요청만 허용됩니다."}, status_code=403)
-    return await call_next(request)
+    response = await call_next(request)
+    if request.url.path.startswith(('/api/mcp/', '/mcp')):
+        response.headers['Cache-Control'] = 'no-store'
+        response.headers['Referrer-Policy'] = 'no-referrer'
+    return response
 
 
 @app.exception_handler(ValueError)
@@ -148,7 +156,7 @@ def validate_due(value):
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "mode": planner.mode, "llm_configured": planner.configured, "version": "0.8.0", "service": "workmate", "hosted": HOSTED}
+    return {"ok": True, "mode": planner.mode, "llm_configured": planner.configured, "version": "0.9.0", "service": "workmate", "hosted": HOSTED}
 
 
 @app.get("/api/state")
@@ -458,6 +466,8 @@ from .google_workspace import install_google_workspace
 install_google_workspace(app, sys.modules[__name__])
 from .personal_desk import install_personal_desk
 install_personal_desk(app, sys.modules[__name__])
+from .mcp_gateway import install_mcp
+install_mcp(app, sys.modules[__name__])
 
 DIST = CODE_ROOT / "frontend" / "dist"
 if DIST.exists():

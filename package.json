@@ -1,6 +1,6 @@
 {
   "name": "workmate-browser-runtime",
-  "version": "0.8.0",
+  "version": "0.9.0",
   "private": true,
   "description": "Actual browser verification for generated Workmate applications",
   "scripts": {
