@@ -1,7 +1,7 @@
 {
   "name": "workmate-mini",
   "productName": "Workmate Mini",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Workmate personal desktop companion",
   "main": "main.cjs",
   "private": true,

@@ -37,6 +37,7 @@ def busy(module):
 def destroy(sid, entry):
     entry['module'].engine.stop()
     entry['module'].planner.key = ''
+    entry['module'].m365.close()
     sys.modules.pop(entry['module'].__name__, None)
     target = (SESSIONS / sid).resolve()
     if target.parent == SESSIONS and target.is_dir():
@@ -89,6 +90,7 @@ async def lifespan(app):
         # while a worker could still be writing them.
         entry['module'].engine.stop()
         entry['module'].planner.key = ''
+        entry['module'].m365.close()
     VISITORS.clear()
 
 
@@ -109,7 +111,7 @@ async def headers(request, call_next):
 
 @app.get('/api/health')
 def health():
-    return {'ok':True, 'service':'workmate', 'version':'0.6.0', 'hosted':True}
+    return {'ok':True, 'service':'workmate', 'version':'0.7.0', 'hosted':True}
 
 
 class VisitorRouter:

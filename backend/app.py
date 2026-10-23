@@ -40,9 +40,10 @@ async def lifespan(app):
     engine.start()
     yield
     engine.stop()
+    m365.close()
 
 
-app = FastAPI(title="Workmate", version="0.6.0", lifespan=lifespan)
+app = FastAPI(title="Workmate", version="0.7.0", lifespan=lifespan)
 PUBLIC_HOST = os.environ.get('RENDER_EXTERNAL_HOSTNAME') or os.environ.get('WORKMATE_PUBLIC_HOST', '')
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "testserver"] + ([PUBLIC_HOST] if HOSTED and PUBLIC_HOST else []))
 
@@ -146,7 +147,7 @@ def validate_due(value):
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "mode": planner.mode, "llm_configured": planner.configured, "version": "0.6.0", "service": "workmate", "hosted": HOSTED}
+    return {"ok": True, "mode": planner.mode, "llm_configured": planner.configured, "version": "0.7.0", "service": "workmate", "hosted": HOSTED}
 
 
 @app.get("/api/state")
@@ -450,6 +451,8 @@ install_companion(app, sys.modules[__name__])
 install_tickets(app, sys.modules[__name__])
 from .agent_hub import install_agent_hub
 install_agent_hub(app, sys.modules[__name__])
+from .m365 import install_m365
+install_m365(app, sys.modules[__name__])
 
 DIST = CODE_ROOT / "frontend" / "dist"
 if DIST.exists():

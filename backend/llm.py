@@ -117,7 +117,7 @@ class Planner:
             "You route a local Korean workplace assistant. Return ONLY a JSON object. "
             "Allowed action: brief, remember, excel, builder, developer, workflow, task, answer, knowledge, analyst, reporter, agent. "
             "Keys: action, title, reply, key, value, app_id, prompt, due_at, baseline, current, question, document_ids, before_id, after_id, project, report_type, agent_id. "
-            "Use agent for meeting notes to decisions/actions, comparing decision options, project risk radar, weekly reflection, or an explicit custom agent request. Select agent_id ONLY from supplied hub_agents. Preserve all user input; each profile is a reusable scoped specialist, its output can be imported into tasks and memory by the user. Do not choose agent for ordinary general chat or an unrelated task. "
+            "Use agent for meeting notes to decisions/actions, comparing decision options, project risk radar, weekly reflection, selected-mail triage/reply drafts, meeting preparation, commitment/follow-up tracking, calendar-aware focus plans, or an explicit custom agent request. Select agent_id ONLY from supplied hub_agents. Preserve all user input; each profile is a reusable scoped specialist, its output can be imported into tasks and memory by the user. Do not choose agent for ordinary general chat or an unrelated task. "
             "User requests to remember are action remember with key/value. "
             "Excel validation action excel. New persistent CRUD business app action builder. "
             "Existing app change/testing/UAT action developer. Reusable procedure action workflow. "
@@ -132,13 +132,13 @@ class Planner:
             "For Excel select existing file IDs only if user specified; otherwise baseline/changed synthetic fixtures. "
             "Use knowledge for answering questions from saved documents; use only supplied document_ids and preserve the user's full question. "
             "Use analyst for comparing two document versions and change impact, with existing before_id/after_id. "
-            "Use reporter for project weekly report (report_type weekly), handover (handover), meeting preparation (meeting_prep). "
+            "Use reporter for project weekly report (report_type weekly) or handover (handover). Prefer the meeting_prep specialist for meeting preparation when present. "
             "Project is the exact supplied project name, not an invented ID. Do not claim external research or enterprise-system access. "
             "The UI also supports daily time-block planning, calendar ICS export, focus timer, and a bottom-right personal companion named 모아 with notification quiet mode. "
             "For questions about ticket UAT reports use answer and direct the user to 개발 티켓 · 결과서: select a ticket, run actual browser checks with screenshots and executor/date metadata, prepare an HTML report plus attached EML mail file. This is distinct from developer actions that change app rules. "
             "Email delivery is performed by the user's mail app after opening the EML, not by this system. Do not claim mail was sent. "
             "The Agent Studio can execute several selected profiles as independent background runs under one mission, with actual step logs, source evidence and downloadable reports. "
-            "The Windows Mini also works outside the browser. You cannot access email inboxes, deploy arbitrary projects, access arbitrary source repositories or company systems."
+            "The Windows Mini also works outside the browser. Outlook/M365 read-only connection and EML/ICS import are available in Outlook · M365. The user must connect an approved Microsoft app and explicitly select imports before specialist analysis. You cannot autonomously access an inbox, send mail, book meetings, deploy arbitrary projects, access arbitrary repositories or company systems. Reply drafts and focus-plan ICS are for manual review/import."
         )
         actual_tasks = tasks or []
         ranked_tasks = sorted(actual_tasks, key=lambda t: (t.get('status') == 'completed', t.get('due_at') or '9999', t.get('priority') != 'high'))
@@ -189,7 +189,10 @@ class Planner:
 def demo_plan(message, apps, hub_agents=None):
     """A transparent deterministic router, not a simulated LLM."""
     lower = message.lower()
-    phrases = {'meeting':('회의록','회의 후속','회의 결정'), 'decision':('의사결정','의사 결정','대안 비교','선택지 비교'), 'radar':('프로젝트 위험','프로젝트 레이더','지연 점검','위험 점검'), 'reflection':('주간 회고','이번 주 회고','개인 회고')}
+    phrases = {'inbox':('메일 정리','받은편지함','답장 초안','메일 분류'), 'meeting_prep':('회의 사전','회의 준비','미팅 준비'),
+               'followup':('후속 연락','약속 추적','회신 추적','회신 요청'), 'focus':('집중 계획','집중 시간','일정 맞춤'),
+               'meeting':('회의록','회의 후속','회의 결정'), 'decision':('의사결정','의사 결정','대안 비교','선택지 비교'),
+               'radar':('프로젝트 위험','프로젝트 레이더','지연 점검','위험 점검'), 'reflection':('주간 회고','이번 주 회고','개인 회고')}
     active = [a for a in (hub_agents or []) if not a.get('archived')]
     # Explicit names take precedence over generic words, longest name first.
     for a in sorted(active, key=lambda a: len(a.get('name', '')), reverse=True):

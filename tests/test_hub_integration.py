@@ -22,7 +22,7 @@ def test_hosted_hub_chat_mission_and_artifacts_are_visitor_scoped(tmp_path, monk
     monkeypatch.setattr(cloud, 'SESSIONS', tmp_path / 'sessions')
     with TestClient(cloud.app) as a, TestClient(cloud.app) as b:
         assert a.get('/').status_code == b.get('/').status_code == 200
-        assert a.get('/api/state').json()['hub_summary']['agents'] == 4
+        assert a.get('/api/state').json()['hub_summary']['agents'] == 8
         reply = a.post('/api/chat', json={'message': '회의록 정리\n결정: A 전용 승인 기준\n액션: 승인 기준 작성 | 담당: 서연 | 기한: 2026-10-28'}).json()
         rid = reply['hub_run_id']
         for _ in range(100):

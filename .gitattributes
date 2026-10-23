@@ -1,0 +1,3 @@
+# Mail and calendar interchange files require RFC CRLF framing.
+*.eml -text -diff
+*.ics -text -diff

@@ -72,10 +72,10 @@ def task(store, identity, **values):
                               'owner': '', 'due_at': None, 'updated_at': now(), **values})
 
 
-def test_four_profiles_and_explicit_meeting_actions_work_without_model(hub):
+def test_default_profiles_and_explicit_meeting_actions_work_without_model(hub):
     client, ctx = hub
     state = client.get('/api/agent-hub').json()
-    assert {a['kind'] for a in state['agents']} == {'meeting', 'decision', 'radar', 'reflection'}
+    assert {a['kind'] for a in state['agents']} == {'meeting', 'decision', 'radar', 'reflection', 'inbox', 'meeting_prep', 'followup', 'focus'}
     output = run(client, request='회의 기록\n결정: 월말 마감을 2단계로 진행\n액션: 정산표 확인 | 담당: 김서연 | 기한: 2026-10-28 | 우선: 높음\n액션: 승인 방식 협의\n기억: 선호 보고 형식 = 한 페이지 요약')
     assert output['status'] == 'completed' and output['mode'] == 'rules'
     assert all(s['status'] == 'completed' for s in output['steps'])
