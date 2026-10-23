@@ -136,7 +136,7 @@ export default function App() {
       <div className="workspace-switch"><span className="workspace-avatar">W</span><div><strong>내 업무 워크스페이스</strong><span>개인 워크스페이스</span></div><ShieldCheck size={16}/></div>
       <span className="nav-caption">업무 공간</span>
       <nav>{NAV.map(([id, label, Icon]) => <button key={id} aria-label={label} aria-current={tab===id?"page":undefined} className={`nav-item ${tab === id ? 'active' : ''}`} onClick={() => navigate(id)}><Icon size={19}/><span>{label}</span>{id === 'home' && state.stats?.waiting > 0 && <span className="nav-count">{state.stats.waiting}</span>}</button>)}</nav>
-      <div className="sidebar-bottom"><div className="local-note"><span className={`live-dot ${connected ? '' : 'offline'}`}/><strong>{connected ? (state.hosted?'온라인 워크스페이스 연결됨':'로컬 워크스페이스 연결됨') : '서버 연결 확인 중'}</strong><p>{state.hosted?'방문 세션별로 분리됩니다. 필요한 결과는 다운로드해 보관하세요.':'작업 이력과 결과를 이 기기에 보관합니다.'}</p></div><div className="profile"><span className="profile-avatar"><UserRound size={18}/></span><div><strong>내 업무 공간</strong><span>Workmate · v0.9</span></div></div></div>
+      <div className="sidebar-bottom"><div className="local-note"><span className={`live-dot ${connected ? '' : 'offline'}`}/><strong>{connected ? (state.hosted?'온라인 워크스페이스 연결됨':'로컬 워크스페이스 연결됨') : '서버 연결 확인 중'}</strong><p>{state.hosted?'방문 세션별로 분리됩니다. 필요한 결과는 다운로드해 보관하세요.':'작업 이력과 결과를 이 기기에 보관합니다.'}</p></div><div className="profile"><span className="profile-avatar"><UserRound size={18}/></span><div><strong>내 업무 공간</strong><span>Workmate · v1.0</span></div></div></div>
     </aside>
     <div className="main-shell">
       <header className="topbar"><div className="breadcrumb"><button className="icon-button mobile-menu" onClick={() => setSidebarOpen(true)} aria-label="메뉴 열기"><Menu size={21}/></button><span>워크스페이스</span><ChevronRight size={14}/><strong>{currentNav[1]}</strong></div><div className="topbar-actions"><button className="icon-button theme-toggle" aria-label="화면 테마 전환" title={theme==='dark'?'라이트 모드로 전환':'다크 모드로 전환'} aria-pressed={theme==='light'} onClick={()=>setTheme(theme==='dark'?'light':'dark')}>{theme==='dark'?<Sun size={15}/>:<Moon size={15}/>}</button><button className="global-search-trigger" onClick={() => setSearchOpen(true)} aria-label="전체 검색 열기"><Search size={15}/><span>검색</span><kbd>Ctrl K</kbd></button><button className={`mode-chip ${state.llm?.status === 'connected' ? 'live' : ''}`} onClick={() => setConnectionOpen(true)} title="연결 상태 확인"><span/>{!connected ? '연결 대기' : state.llm?.status === 'connected' ? 'API 연결됨' : state.llm?.status === 'error' ? '연결 오류' : state.llm_configured ? '모델 설정됨' : '규칙 기반'}</button><button className="icon-button bell-button" onClick={() => setNotificationsOpen(!notificationsOpen)} aria-label={`알림 ${unread}개`}><Bell size={20}/>{unread > 0 && <i>{unread}</i>}</button></div>
@@ -162,7 +162,7 @@ export default function App() {
           {tab === 'analysis' && <AnalysisPage {...props}/>}
           {tab === 'examples' && <ExamplesPage {...props}/>}
         </>}
-        <footer className="page-footer"><span><ShieldCheck size={13}/> 실행 단계 · 근거 · 결과물을 함께 보관합니다</span><span>Workmate · v0.9</span></footer>
+        <footer className="page-footer"><span><ShieldCheck size={13}/> 실행 단계 · 근거 · 결과물을 함께 보관합니다</span><span>Workmate · v1.0</span></footer>
       </main>
     </div>
     <GlobalSearch open={searchOpen} onClose={() => setSearchOpen(false)} {...props}/>

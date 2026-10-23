@@ -29,10 +29,10 @@ function dismiss(){currentNudge=null;if(bubble)bubble.hide();clearTimeout(bubble
 function showPanel(){dismiss();if(!panel)return;pet.showInactive();positionWindows();panel.show();panel.focus();}
 function toggle(){if(panel?.isVisible())panel.hide();else showPanel();}
 function rebuildMenu(){if(!tray)return;tray.setContextMenu(Menu.buildFromTemplate([
- {label:'모아와 빠른 대화',accelerator:shortcutName,click:showPanel},
+ {label:'미니와 빠른 대화',accelerator:shortcutName,click:showPanel},
  {label:'워크스페이스 열기',click:()=>shell.openExternal(origin+'/#home')},
  {type:'separator'},
- {label:'바탕화면 모아 표시',type:'checkbox',checked:!!pet?.isVisible(),click:item=>{if(item.checked)pet.showInactive();else{pet.hide();dismiss();}rebuildMenu();}},
+ {label:'바탕화면 미니 표시',type:'checkbox',checked:!!pet?.isVisible(),click:item=>{if(item.checked)pet.showInactive();else{pet.hide();dismiss();}rebuildMenu();}},
  {label:'항상 위에 표시',type:'checkbox',checked:prefs.alwaysOnTop,click:item=>applySettings({alwaysOnTop:item.checked})},
  {label:'말풍선 알림',type:'checkbox',checked:prefs.notifications,click:item=>applySettings({notifications:item.checked})},
  {label:'Windows 로그인 시 시작',type:'checkbox',checked:startup(),click:item=>applySettings({startup:item.checked})},
@@ -65,12 +65,12 @@ app.whenReady().then(async()=>{
  app.setAppUserModelId('com.workmate.mini');
  const icon=nativeImage.createFromPath(path.join(__dirname,'icon.png'));
  const area=screen.getPrimaryDisplay().workArea,box=clamp({x:area.x+area.width-140,y:area.y+area.height-155,width:120,height:140,...prefs.position},area);
- pet=makeWindow({...box,transparent:true,frame:false,resizable:false,hasShadow:false,title:'Workmate Mini · 모아',icon},'pet');
+ pet=makeWindow({...box,transparent:true,frame:false,resizable:false,hasShadow:false,title:'Workmate Mini · 미니',icon},'pet');
  panel=makeWindow({width:460,height:730,minWidth:400,minHeight:520,frame:false,resizable:true,backgroundColor:'#11151c',title:'Workmate Mini',icon},'panel');
  bubble=makeWindow({width:330,height:140,transparent:true,frame:false,resizable:false,hasShadow:false,focusable:false,title:'Workmate 알림',icon},'bubble');
  await pet.loadFile(path.join(__dirname,'pet.html'));await bubble.loadFile(path.join(__dirname,'bubble.html'));pet.showInactive();
  pet.on('moved',()=>{prefs.position=pet.getBounds();save();positionWindows();});screen.on('display-metrics-changed',()=>{pet.setBounds(clamp(pet.getBounds(),screen.getDisplayMatching(pet.getBounds()).workArea));positionWindows();});
- tray=new Tray(icon);tray.setToolTip('Workmate Mini · 모아');tray.on('double-click',showPanel);
+ tray=new Tray(icon);tray.setToolTip('Workmate Mini · 미니');tray.on('double-click',showPanel);
  shortcut=globalShortcut.register(shortcutName,toggle);update();
  try{await startServer();ready=true;await panel.loadURL(origin+'/?companion=1');update();poll=setInterval(readNudges,15000);setTimeout(readNudges,2500);if(process.argv.includes('--show'))showPanel();}
  catch(error){serverError=error.message;update();await dialog.showMessageBox(pet,{type:'error',title:'Workmate Mini',message:serverError});}

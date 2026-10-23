@@ -1,0 +1,51 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Workmate//ERP Calendar//KO
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:cutover-kickoff-20261026@example.com
+DTSTAMP:20261023T002000Z
+DTSTART:20261026T010000Z
+DTEND:20261026T020000Z
+SUMMARY:ERP 운영 전환 준비회의
+DESCRIPTION:미해결 항목 확인\n전환 순서와 중단 기준 협
+ 의\n현업 승인 기준 및 UAT 결과서 검토
+LOCATION:본사 8층 프로젝트 회의실
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+ORGANIZER;CN=박서연:mailto:seoyeon.park@example.com
+ATTENDEE;CN=김도윤;PARTSTAT=ACCEPTED:mailto:doyoon.kim@example.com
+ATTENDEE;CN=이수빈;PARTSTAT=ACCEPTED:mailto:subin.lee@example.com
+END:VEVENT
+BEGIN:VEVENT
+UID:interface-review-20261026@example.com
+DTSTAMP:20261023T002000Z
+DTSTART:20261026T050000Z
+DTEND:20261026T060000Z
+SUMMARY:인터페이스 운영 인수 검토
+DESCRIPTION:배치 재처리 기준과 알림 담당자 확인\n운영 
+ 매뉴얼의 예외 처리 검토
+LOCATION:온라인 회의
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+ORGANIZER;CN=박서연:mailto:seoyeon.park@example.com
+ATTENDEE;CN=김도윤;PARTSTAT=ACCEPTED:mailto:doyoon.kim@example.com
+ATTENDEE;CN=이수빈;PARTSTAT=ACCEPTED:mailto:subin.lee@example.com
+END:VEVENT
+BEGIN:VEVENT
+UID:signoff-review-20261027@example.com
+DTSTAMP:20261023T002000Z
+DTSTART:20261027T003000Z
+DTEND:20261027T013000Z
+SUMMARY:전환 체크리스트 최종 확인
+DESCRIPTION:현업 승인 여부와 미해결 항목을 다시 확인합
+ 니다.
+LOCATION:본사 8층 프로젝트 회의실
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+ORGANIZER;CN=박서연:mailto:seoyeon.park@example.com
+ATTENDEE;CN=김도윤;PARTSTAT=ACCEPTED:mailto:doyoon.kim@example.com
+ATTENDEE;CN=이수빈;PARTSTAT=ACCEPTED:mailto:subin.lee@example.com
+END:VEVENT
+END:VCALENDAR

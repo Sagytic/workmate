@@ -10,7 +10,7 @@ from pydantic import BaseModel, Field
 from .store import LOCK, KST, now, uid
 
 REFERENCES = [
-    {'name':'Raycast Focus', 'url':'https://manual.raycast.com/focus', 'pattern':'빠른 대화와 업무별 집중 세션', 'implementation':'모아 비서의 빠른 요청·집중 타이머·알림 쉬기'},
+    {'name':'Raycast Focus', 'url':'https://manual.raycast.com/focus', 'pattern':'빠른 대화와 업무별 집중 세션', 'implementation':'미니 비서의 빠른 요청·집중 타이머·알림 쉬기'},
     {'name':'Motion', 'url':'https://www.usemotion.com/features/ai-task-manager', 'pattern':'기한과 우선순위에 따른 시간 배치', 'implementation':'오늘 계획과 업무별 시간 블록·캘린더 파일'},
     {'name':'Atlassian 티켓 에이전트', 'url':'https://support.atlassian.com/jira-software-cloud/docs/collaborate-on-work-items-with-ai-agents/', 'pattern':'티켓 맥락에 작업과 결과 연결', 'implementation':'티켓 선택부터 UAT 화면 증거·결과서·전달 패키지까지'},
     {'name': 'Notion 3.8', 'url': 'https://www.notion.com/releases/2026-10-13',

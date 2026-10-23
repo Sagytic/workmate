@@ -1,8 +1,21 @@
-# Workmate v0.9 · 브라우저 밖에서도, 내 곁의 비서
+# Workmate v1.0 · 브라우저 밖에서도, 내 곁의 비서
 
 Windows Mini가 바탕화면과 트레이에 머무르며 빠른 대화와 업무 알림을 제공합니다. `Ctrl+Alt+Space`로 열고, 창을 닫아도 곁에 남습니다. 개인 업무의 기억·메일·일정·Excel·UAT를 웹 워크스페이스에서 실행하고, 선택한 기본·맞춤 에이전트와 문서·업무앱을 MCP로 다른 AI 도구에 연결합니다. Mini와 로컬 서버가 실행되는 동안 사용할 수 있습니다.
 
-[워크스페이스 열기](https://workmate-otpo.onrender.com/) · [서비스 소개와 영상](https://sagytic.github.io/workmate/) · [설치·개인 API 사용 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html) · [Windows Mini와 실행 패키지](https://github.com/Sagytic/workmate/releases/tag/v0.9.0)
+[워크스페이스 열기](https://workmate-otpo.onrender.com/) · [서비스 소개와 영상](https://sagytic.github.io/workmate/) · [설치·개인 API 사용 안내](https://sagytic.github.io/workmate/03_Workmate_User_Manual_v1.0.html) · [Windows Mini와 실행 패키지](https://github.com/Sagytic/workmate/releases/tag/v1.0.0)
+
+## v1.0 제출 자료
+
+최종 제출본은 아래 네 파일입니다. A4 요약은 제출 구성에서 제외했습니다.
+
+| 파일 | 목적 |
+|---|---|
+| `01_Workmate_Code_v1.0.zip` | 전체 소스코드, 빌드된 웹 화면, 설정 예시, 실행 스크립트와 검증 코드 |
+| `02_Workmate_Service_Overview_v1.0.html` | 심사·소개용: 서비스 목적, 바탕화면 Mini의 차별점, 주요 활용 장면 |
+| `03_Workmate_User_Manual_v1.0.html` | 사용자용: 설치, 개인 API와 계정 연결, 기능별 사용 순서 |
+| `04_Workmate_Assets_v1.0.zip` | 영상, Excel 예제, UAT 산출물, 화면 원본, Windows Mini 실행 패키지 |
+
+두 HTML은 이미지와 영상 표지를 파일 안에 포함하므로 단독으로 이동해도 본문·사진을 볼 수 있습니다. 첨부자료 ZIP은 HTML과 같은 폴더에 풀어 `Workmate_Assets/` 폴더를 두세요. 영상·예제 링크는 이 폴더를 읽습니다. 문서·영상 열기는 인터넷 없이 가능하지만 앱 설치 의존성과 LLM·OAuth 연결은 별도 준비가 필요합니다.
 
 ## 바탕화면 Mini와 MCP 연결
 
@@ -13,7 +26,7 @@ Windows Mini가 바탕화면과 트레이에 머무르며 빠른 대화와 업�
 
 MCP 서버 주소는 연결 화면에 표시됩니다. 접근 키를 URL에 넣지 말고 `Authorization: Bearer <접근 키>` 헤더에 설정하세요. 키는 원문을 한 번만 보여주고 서버에는 해시로 저장합니다. 모델 분석은 개인이 연결한 API를 사용합니다.
 
-[Mini·MCP 사용 영상](https://sagytic.github.io/workmate/Workmate_Mini와_MCP_활용흐름_v0.9.mp4) · [MCP 설정 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html#mcp) · [공식 SDK 연결 예제](scripts/mcp_client_example.py)
+[Mini·MCP 사용 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/01_Mini_MCP.mp4) · [MCP 설정 안내](https://sagytic.github.io/workmate/03_Workmate_User_Manual_v1.0.html#mcp) · [공식 SDK 연결 예제](scripts/mcp_client_example.py)
 
 ## 개인 비서 데스크와 Google 읽기 연결
 
@@ -23,7 +36,7 @@ MCP 서버 주소는 연결 화면에 표시됩니다. 접근 키를 URL에 넣�
 |---|---|
 | 오늘의 브리핑 | 날짜·프로젝트·자료를 정해 가져온 메일, 당일과 겹치는 일정, 실제 마감 업무를 집계합니다. 원문과 업무 링크, 전문 에이전트로 이어가는 설정을 제공합니다. LLM 호출 없이 동작합니다. |
 | 후속 연락 | 원문에 연결해 내가 답할 일과 기다리는 답을 직접 등록합니다. 기한·메모, 미루기·완료·보관을 관리합니다. 전체 대화의 미회신을 추론하지 않습니다. |
-| 나의 루틴 | 요일·한국 시간·자료 범위에 따라 서버 실행 중 브리핑을 만들고 모아에 한 번 알립니다. 외부 계정을 자동 조회하거나 LLM을 자동 실행하지 않습니다. |
+| 나의 루틴 | 요일·한국 시간·자료 범위에 따라 서버 실행 중 브리핑을 만들고 미니에 한 번 알립니다. 외부 계정을 자동 조회하거나 LLM을 자동 실행하지 않습니다. |
 | 내 글쓰기 | 말투·언어·길이·서명·상용구를 저장하고 사용을 켭니다. 다음 inbox/followup API 분석에서만 스타일로 참고하며 사실의 근거로 사용하지 않습니다. |
 
 자료 선택이 비어 있으면 해당 프로젝트(프로젝트도 없으면 개인 작업 공간)에서 **가져온 메일·일정 사본**을 집계합니다. 미정·불확실한 일정은 경고와 함께 날짜별 목록에서 제외합니다. 날짜만 있는 기한은 자정으로 바꾸지 않으며, Google 종일 일정은 원래 캘린더 날짜와 시간대를 보존합니다. 최신 브리핑 30개, 활성 연락 100개, 활성 루틴 30개, 상용구 12개 한도입니다. 보관은 기록을 유지하면서 활성 목록과 예약에서 제외합니다.
@@ -40,7 +53,7 @@ MCP 서버 주소는 연결 화면에 표시됩니다. 접근 키를 URL에 넣�
 
 Google·Microsoft의 읽기 커넥터 구현과 사용자의 계정 인증은 별개입니다. 실제 로그인·동의는 본인의 앱 설정과 제공자·조직 승인 후 완료합니다. Microsoft 앱 등록이 허용되지 않으면 관리자 승인 후 연결하고 EML·ICS 파일을 먼저 사용할 수 있습니다. 메일 발송·메일 라벨 변경·외부 캘린더 쓰기는 수행하지 않습니다.
 
-[Google 공식 웹 OAuth](https://developers.google.com/identity/protocols/oauth2/web-server) · [Gmail 권한](https://developers.google.com/workspace/gmail/api/auth/scopes) · [토큰 만료](https://developers.google.com/identity/protocols/oauth2/#expiration) · [개인 비서 제품 비교와 적용](https://sagytic.github.io/workmate/Workmate_사용안내.html#global-patterns) · [비서 데스크 실제 영상](https://sagytic.github.io/workmate/Workmate_비서데스크_활용흐름.mp4)
+[Google 공식 웹 OAuth](https://developers.google.com/identity/protocols/oauth2/web-server) · [Gmail 권한](https://developers.google.com/workspace/gmail/api/auth/scopes) · [토큰 만료](https://developers.google.com/identity/protocols/oauth2/#expiration) · [개인 비서 제품 비교와 적용](https://sagytic.github.io/workmate/03_Workmate_User_Manual_v1.0.html#global-patterns) · [비서 데스크 실제 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/02_Personal_Desk.mp4)
 
 배포 관리자가 승인된 웹 앱을 준비했다면 서버 환경변수 `WORKMATE_GOOGLE_CLIENT_ID`, `WORKMATE_GOOGLE_CLIENT_SECRET`으로 기본 앱을 구성할 수 있습니다. 방문자는 각자 Google 연결 버튼에서 로그인·동의하며, 토큰·가져온 자료는 방문자별로 분리됩니다. 직접 입력한 BYO 설정은 해당 방문자에서 기본 앱을 덮어씁니다. **현재 공개 서비스에는 공용 Google 앱이 설정되어 있지 않아 본인의 앱 등록이 필요합니다.** 환경변수의 비밀값을 소스·영상·공개 로그에 포함하지 않습니다.
 
@@ -74,7 +87,7 @@ Google·Microsoft의 읽기 커넥터 구현과 사용자의 계정 인증은 �
 
 날짜만 명시된 기한은 날짜로 보존하며 다음 날부터 기한 경과로 집계합니다. 기한이나 담당자가 원문에 없으면 비워 둡니다. 실행 상태가 완료되었다고 후속 업무까지 완료 처리하지 않습니다. 에이전트가 외부 메일·웹사이트를 자율 조작하거나 새 미션을 계속 만드는 구조는 아닙니다.
 
-[메일·일정 활용 영상](https://sagytic.github.io/workmate/Workmate_메일과일정_활용흐름_v0.8.1_최종.mp4) · [에이전트 활용 영상](https://sagytic.github.io/workmate/Workmate_에이전트_활용흐름.mp4) · [사용 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html#agent-studio)
+[메일·일정 활용 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/03_Gmail_Calendar.mp4) · [에이전트 활용 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/04_Agents_Collaboration.mp4) · [사용 안내](https://sagytic.github.io/workmate/03_Workmate_User_Manual_v1.0.html#agent-studio)
 
 참고한 공식 설계 자료: [Dot 작업과 기억](https://learn.chatgpt.com/docs/dots/tasks-and-memory), [Muse 개인 에이전트](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/), [Notion Custom Agents](https://www.notion.com/help/custom-agents). 개인 맥락·목표의 후속 행동·프로필별 지침과 자료 범위에 관한 설계를 참고했으며 제품 연동을 뜻하지 않습니다. 확인일 2026-10-23.
 
@@ -119,7 +132,7 @@ API 없이 Excel 검사·사본 복원, 업무·자료 관리, 기한 기반 계
 
 ## Windows Mini
 
-독립 Windows 앱입니다. 브라우저를 닫아도 바탕화면 모아와 트레이가 남습니다. 모아 클릭 또는 `Ctrl + Alt + Space`로 대화를 열고, 상단 점을 끌어 위치를 바꿉니다. 설정에서 항상 위 표시, 말풍선 알림, Windows 로그인 시 시작을 선택할 수 있습니다. 로그인 시 시작은 기본으로 꺼져 있습니다. 서버가 꺼져 있으면 Mini가 함께 시작하며, 기존 서버가 있으면 재사용합니다. 트레이 메뉴의 종료로 끝냅니다.
+독립 Windows 앱입니다. 브라우저를 닫아도 바탕화면 미니와 트레이가 남습니다. 미니 클릭 또는 `Ctrl + Alt + Space`로 대화를 열고, 상단 점을 끌어 위치를 바꿉니다. 설정에서 항상 위 표시, 말풍선 알림, Windows 로그인 시 시작을 선택할 수 있습니다. 로그인 시 시작은 기본으로 꺼져 있습니다. 서버가 꺼져 있으면 Mini가 함께 시작하며, 기존 서버가 있으면 재사용합니다. 트레이 메뉴의 종료로 끝냅니다.
 
 배포된 Windows 실행 파일을 사용하거나 다음 명령으로 개발 실행합니다. 다른 PC에는 아래 Python 의존성 설치를 먼저 진행하세요.
 
@@ -162,7 +175,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File .\setup.ps1
 
 ## v0.4 개인 비서와 티켓 결과서
 
-- **모아:** 모든 웹 화면 오른쪽 아래에서 빠른 대화와 업무 알림을 제공합니다. `Ctrl+Shift+Space`로 열고, 확장 버튼으로 별도 작은 브라우저 창을 엽니다. 이름, 알림 잠시 끄기, 30분 미루기를 설정할 수 있습니다. v0.8의 Windows Mini는 위 설명과 같이 브라우저 밖에서도 실행합니다.
+- **미니:** 모든 웹 화면 오른쪽 아래에서 빠른 대화와 업무 알림을 제공합니다. `Ctrl+Shift+Space`로 열고, 확장 버튼으로 별도 작은 브라우저 창을 엽니다. 이름, 알림 잠시 끄기, 30분 미루기를 설정할 수 있습니다. Windows Mini는 위 설명과 같이 브라우저 밖에서도 실행합니다.
 - **오늘 계획:** 프로젝트와 가용 시간 안에서 기한·우선순위·보완 대기를 기준으로 업무를 배치합니다. 시간 블록의 완료, 업무 상세 연결, 집중 시작, 캘린더 가져오기용 ICS 다운로드를 제공합니다. 규칙 기반 배치이며 외부 캘린더의 빈 시간을 읽지는 않습니다.
 - **집중 시간:** 업무별 타이머 시작·일시 정지·재개·완료와 집중 기록을 저장합니다. 집중 중에는 말풍선 알림이 잠시 멈춥니다. 타이머 완료와 실제 업무 완료는 별도로 관리합니다.
 - **개발 티켓 · 결과서:** 앱, 요구사항, 요청자·메일, 개발 담당자, 연결 개발 작업과 인수 기준을 저장합니다. 티켓을 선택하면 현재 앱 소스 사본을 실제 브라우저에서 실행하고 항목별 화면 증거를 만듭니다.
@@ -184,7 +197,7 @@ UAT 양식은 European Commission PM²의 Deliverables Acceptance Plan/Checklist
 
 - Python 회귀 **113개 통과**, 브라우저 선택 항목 1개 제외. 해당 실제 브라우저 항목을 별도로 실행해 **1개 통과**했습니다. 외부 라이브러리 경고 1건이 있습니다.
 - 8개 역할의 실제 서버 실행, 문서 근거 발췌, 앱 생성·변경, 자동화 대기 후 보완·등록, Excel 사본 복원과 다운로드를 확인했습니다.
-- 모아 실제 API 대화·기억, 오늘 계획과 ICS, 집중 시작·일시 정지·재개·완료, 작은 창과 업무 링크를 확인했습니다.
+- 미니 실제 API 대화·기억, 오늘 계획과 ICS, 집중 시작·일시 정지·재개·완료, 작은 창과 업무 링크를 확인했습니다.
 - 촬영한 구매 요청 티켓은 **11개 항목 통과·11장 캡처**입니다. 결과서와 EML 첨부를 확인했고 현업 인수 결정은 별도 상태로 남습니다.
 - 실제 촬영 화면, 자막이 합쳐진 MP4, 소개 HTML, A4 소개와 사용 안내를 별도 자료 모음에 담았습니다.
 - 전체 응답 이력이 포함된 내부 검증 파일은 배포에서 제외하고 요약 기록을 `verification/v0.4/summary.json`에 보관합니다.
@@ -380,7 +393,7 @@ backend/builder.py           생성 앱, 제약 변경, 고정 양식 UAT
 backend/builder_browser.cjs  실제 브라우저 검사·캡처
 backend/companion.py         개인 비서 계획·집중·알림 API
 backend/tickets.py           개발 티켓·화면 증거·결과서·EML
-frontend/src/companion.jsx   모아·작은 창·오늘 계획
+frontend/src/companion.jsx   미니·작은 창·오늘 계획
 frontend/src/tickets.jsx     개발 티켓·실행 결과·인수 기록
 frontend/                   React 화면
 data/fixtures/              기본 XLSX와 예상 결과

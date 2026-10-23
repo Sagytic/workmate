@@ -5,8 +5,8 @@ import stat
 from zipfile import ZipFile, ZIP_DEFLATED
 
 ROOT = Path(__file__).resolve().parents[1]
-DEST = ROOT.parent / "Workmate_v0.4.zip"
-EXCLUDED = {"node_modules", ".venv", "__pycache__", ".pytest_cache", ".git", "work"}
+DEST = ROOT.parent / "Workmate_Code_v1.0.zip"
+EXCLUDED = {"node_modules", ".venv", "__pycache__", ".pytest_cache", ".git", "work", "docs", "verification"}
 
 
 def include(path):
@@ -15,12 +15,10 @@ def include(path):
     relative = path.relative_to(ROOT)
     if any(part in EXCLUDED for part in relative.parts):
         return False
-    if (path.name.startswith(".env") and path.name != ".env.example") or path.name.lower() == "key.txt" or path.suffix in (".db", ".db-shm", ".db-wal", ".pyc"):
+    if (path.name.lower().startswith(".env") and path.name != ".env.example") or path.name.lower() == "key.txt" or path.suffix.lower() in (".db", ".db-shm", ".db-wal", ".sqlite", ".sqlite3", ".pyc"):
         return False
     if relative.parts[0] == "data" and relative.parts[1] not in ("fixtures", "examples"):
         return False
-    if relative.parts[0] == 'verification' and relative.as_posix() != 'verification/v0.4/summary.json':
-        return False  # Complete response histories stay on the development machine.
     if path.name.startswith('visual-review-') or path.suffix == '.ndjson':
         return False
     return path.is_file()

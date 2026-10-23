@@ -1,0 +1,26 @@
+﻿Workmate v1.0 첨부자료
+
+1. HTML과 이 폴더의 위치
+   02_Workmate_Service_Overview_v1.0.html
+   03_Workmate_User_Manual_v1.0.html
+   Workmate_Assets/
+     자료목록.html
+     videos/ · excel/ · uat/ · screenshots/ · mail-calendar/ · install/
+
+HTML 안의 사진은 자체 내장되어 있습니다. 영상과 예제는 Workmate_Assets 폴더를 사용합니다.
+첨부자료 ZIP을 다시 같은 이름의 중첩 폴더에 넣지 말고 위 구조로 풀어주세요.
+두 HTML을 ZIP 프로그램의 미리보기로 열지 말고 디스크에 저장해 브라우저로 여세요.
+
+서비스 소개서: 서비스의 가치·차별점·주요 기능·활용 장면.
+사용자 매뉴얼: 설치·API 연결·실행 순서·설정과 동작 범위.
+
+화면 사진과 동영상은 실제 기능 실행을 확인하며 확보한 자료입니다.
+Mini·MCP 영상은 Windows Mini 촬영분과 실제 MCP 실행 화면을 자막과 함께 편집한 영상입니다.
+자막은 영상에 포함되어 있습니다. 별도 자막 파일은 없습니다.
+
+문서와 첨부영상은 인터넷 없이 볼 수 있습니다.
+앱 설치에는 Python·Node.js와 의존성 패키지가 필요하고, LLM·Google·Microsoft 연결은 계정과 허용된 네트워크가 필요합니다.
+개인 API 키·접근 토큰·업무 DB는 패키지에 포함하지 않습니다.
+
+온라인 소개: https://sagytic.github.io/workmate/
+소스 및 릴리스: https://github.com/Sagytic/workmate/releases/tag/v1.0.0

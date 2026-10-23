@@ -8,7 +8,7 @@ from .desk_api import deadline_overdue, parsed_time
 
 
 class Preferences(BaseModel):
-    name: str = Field(default='모아', min_length=1, max_length=20)
+    name: str = Field(default='미니', min_length=1, max_length=20)
     quiet: bool = False
     enabled: bool = True
     quiet_until: str | None = None
@@ -92,7 +92,7 @@ def install_companion(app, ctx):
     @app.get('/api/companion')
     def companion():
         tick(ctx.store)
-        prefs = ctx.store.get('preferences', 'companion') or {'name': '모아', 'quiet': False, 'enabled': True}
+        prefs = ctx.store.get('preferences', 'companion') or {'name': '미니', 'quiet': False, 'enabled': True}
         items = priority_tasks(ctx.store)
         tasks = [t for t in ctx.store.all('tasks') if not t.get('archived')]
         today = datetime.now(KST).date()

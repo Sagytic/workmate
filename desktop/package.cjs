@@ -41,6 +41,34 @@ async function verifiedElectronZipDir(){
   return undefined;
 }
 
+function repairAsarIntegrity(folder){
+  // Packager 19.0.1 assigns a pooled Buffer's entire backing ArrayBuffer to
+  // ELECTRONASAR. Rebuild that resource with exactly the intended JSON bytes;
+  // otherwise unrelated temporary paths/source bytes can enter the executable.
+  const {NtExecutable,NtExecutableResource}=require('resedit');
+  const {getRawHeader}=require('@electron/asar');
+  const archive=path.join(folder,'resources','app.asar');
+  const executable=path.join(folder,'Workmate Mini.exe');
+  const hash=crypto.createHash('sha256').update(getRawHeader(archive).headerString).digest('hex');
+  const payload=JSON.stringify([{file:'resources\\app.asar',alg:'SHA256',value:hash}]);
+  const exe=NtExecutable.from(fs.readFileSync(executable));
+  const resources=NtExecutableResource.from(exe);
+  const entries=resources.entries.filter(entry=>entry.type==='INTEGRITY'&&entry.id==='ELECTRONASAR');
+  if(entries.length!==1)throw new Error('Expected exactly one Electron ASAR integrity resource.');
+  const bytes=Buffer.from(payload,'utf8');
+  entries[0].bin=bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength);
+  resources.outputResource(exe);
+  const generated=Buffer.from(exe.generate());
+  // This distribution must not contain the current builder's personal path.
+  for(const marker of [Buffer.from(os.homedir()),Buffer.from(os.homedir(),'utf16le')]){
+    if(generated.includes(marker))throw new Error('A personal build path remains in the executable.');
+  }
+  fs.writeFileSync(executable,generated);
+  const verified=NtExecutableResource.from(NtExecutable.from(generated)).entries.find(entry=>entry.type==='INTEGRITY'&&entry.id==='ELECTRONASAR');
+  if(Buffer.from(verified.bin).toString('utf8')!==payload)throw new Error('Electron ASAR integrity resource did not round-trip exactly.');
+  console.log(`Verified exact Electron ASAR integrity resource (${bytes.length} bytes).`);
+}
+
 async function main(){
   const electronZipDir=await verifiedElectronZipDir();
   const [folder]=await packager({dir:__dirname,out:path.resolve(__dirname,'../../workmate-desktop'),
@@ -48,9 +76,10 @@ async function main(){
     ...(electronZipDir?{electronZipDir}:{}),
     ignore:[/^\/node_modules/,/^\/test/,/^\/package\.cjs$/],appBundleId:'com.workmate.mini',
     win32metadata:{CompanyName:'Workmate',FileDescription:'Workmate Mini',ProductName:'Workmate Mini'}});
+  repairAsarIntegrity(folder);
   fs.writeFileSync(path.join(folder,'resources','workmate-root.json'),JSON.stringify({path:'../../../workmate'}));
   console.log(folder);
 }
 
 if(require.main===module)main().catch(error=>{console.error(error.message);process.exitCode=1;});
-module.exports={sha256,verifiedElectronZipDir};
+module.exports={sha256,verifiedElectronZipDir,repairAsarIntegrity};

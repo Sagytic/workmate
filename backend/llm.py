@@ -134,7 +134,7 @@ class Planner:
             "Use analyst for comparing two document versions and change impact, with existing before_id/after_id. "
             "Use reporter for project weekly report (report_type weekly) or handover (handover). Prefer the meeting_prep specialist for meeting preparation when present. "
             "Project is the exact supplied project name, not an invented ID. Do not claim external research or enterprise-system access. "
-            "The UI also supports daily time-block planning, calendar ICS export, focus timer, and a bottom-right personal companion named 모아 with notification quiet mode. "
+            "The UI also supports daily time-block planning, calendar ICS export, focus timer, and a bottom-right personal companion named 미니 with notification quiet mode. "
             "For questions about ticket UAT reports use answer and direct the user to 개발 티켓 · 결과서: select a ticket, run actual browser checks with screenshots and executor/date metadata, prepare an HTML report plus attached EML mail file. This is distinct from developer actions that change app rules. "
             "Email delivery is performed by the user's mail app after opening the EML, not by this system. Do not claim mail was sent. "
             "The Agent Studio can execute several selected profiles as independent background runs under one mission, with actual step logs, source evidence and downloadable reports. "

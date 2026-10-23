@@ -120,7 +120,7 @@ async def headers(request, call_next):
 
 @app.get('/api/health')
 def health():
-    return {'ok':True, 'service':'workmate', 'version':'0.9.0', 'hosted':True}
+    return {'ok':True, 'service':'workmate', 'version':'1.0.0', 'hosted':True}
 
 
 class VisitorRouter:

@@ -48,7 +48,7 @@ async def lifespan(app):
     google.close()
 
 
-app = FastAPI(title="Workmate", version="0.9.0", lifespan=lifespan)
+app = FastAPI(title="Workmate", version="1.0.0", lifespan=lifespan)
 PUBLIC_HOST = os.environ.get('RENDER_EXTERNAL_HOSTNAME') or os.environ.get('WORKMATE_PUBLIC_HOST', '')
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=["127.0.0.1", "localhost", "testserver"] + ([PUBLIC_HOST] if HOSTED and PUBLIC_HOST else []))
 
@@ -156,7 +156,7 @@ def validate_due(value):
 
 @app.get("/api/health")
 def health():
-    return {"ok": True, "mode": planner.mode, "llm_configured": planner.configured, "version": "0.9.0", "service": "workmate", "hosted": HOSTED}
+    return {"ok": True, "mode": planner.mode, "llm_configured": planner.configured, "version": "1.0.0", "service": "workmate", "hosted": HOSTED}
 
 
 @app.get("/api/state")
