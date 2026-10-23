@@ -63,7 +63,7 @@ Google·Microsoft의 읽기 커넥터 구현과 사용자의 계정 인증은 �
 
 날짜만 명시된 기한은 날짜로 보존하며 다음 날부터 기한 경과로 집계합니다. 기한이나 담당자가 원문에 없으면 비워 둡니다. 실행 상태가 완료되었다고 후속 업무까지 완료 처리하지 않습니다. 에이전트가 외부 메일·웹사이트를 자율 조작하거나 새 미션을 계속 만드는 구조는 아닙니다.
 
-[메일·일정 활용 영상](https://sagytic.github.io/workmate/Workmate_메일과일정_활용흐름.mp4) · [에이전트 활용 영상](https://sagytic.github.io/workmate/Workmate_에이전트_활용흐름.mp4) · [사용 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html#agent-studio)
+[메일·일정 활용 영상](https://sagytic.github.io/workmate/Workmate_메일과일정_활용흐름_v0.8.1_최종.mp4) · [에이전트 활용 영상](https://sagytic.github.io/workmate/Workmate_에이전트_활용흐름.mp4) · [사용 안내](https://sagytic.github.io/workmate/Workmate_사용안내.html#agent-studio)
 
 참고한 공식 설계 자료: [Dot 작업과 기억](https://learn.chatgpt.com/docs/dots/tasks-and-memory), [Muse 개인 에이전트](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/), [Notion Custom Agents](https://www.notion.com/help/custom-agents). 개인 맥락·목표의 후속 행동·프로필별 지침과 자료 범위에 관한 설계를 참고했으며 제품 연동을 뜻하지 않습니다. 확인일 2026-10-23.
 
@@ -81,7 +81,7 @@ Microsoft 연결은 위임된 **device authorization flow**입니다. 본인 또
 
 `offline_access`로 현재 세션의 읽기 연결을 갱신합니다. 액세스·갱신 토큰은 방문자별 서버 메모리에만 유지하고 브라우저 저장소·SQLite·공유 파일에 기록하지 않습니다. 서버 재시작·세션 만료 뒤 다시 연결합니다. 연결 해제 후에도 선택해 자료실에 저장한 문서는 별도 자료이므로 자료실에서 관리합니다. 에이전트 분석 시 선택한 원문은 개인 LLM 제공자로 전송될 수 있습니다.
 
-조직 정책에 따라 코드 로그인이 차단되거나 관리자 동의가 필요할 수 있습니다. 실제 Microsoft 계정의 로그인·동의는 사용자가 연결할 때 완료합니다. 현재 공개 영상은 EML·ICS 가져오기와 실제 에이전트 실행을 보여 줍니다. 읽기 연동은 자동 메일 발송·메일 변경·일정 쓰기·상시 동기화를 수행하지 않습니다.
+조직 정책에 따라 코드 로그인이 차단되거나 관리자 동의가 필요할 수 있습니다. 실제 Microsoft 계정의 로그인·동의는 사용자가 연결할 때 완료합니다. 메일·일정 영상은 EML·ICS 가져오기와 전문 에이전트 실행에 이어 Google Calendar의 다음 달 전체·기간 지정 조회와 항목 선택을 보여 줍니다. 조회한 목록은 필요한 항목을 선택해 가져오기를 실행해야 자료실에 저장됩니다. 읽기 연동은 자동 메일 발송·메일 변경·일정 쓰기·상시 동기화를 수행하지 않습니다.
 
 **답장:** 결과의 초안을 검토하고 복사하거나 EML로 받습니다. 받는 사람·날짜·약속을 확인한 뒤 메일 앱에서 직접 보냅니다. 가져온 기록만으로 미회신/완료를 단정하지 않습니다.
 
