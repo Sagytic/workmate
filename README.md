@@ -15,7 +15,7 @@ Windows Mini가 바탕화면과 트레이에 머무르며 빠른 대화와 업�
 | `03_Workmate_User_Manual_v1.0.html` | 사용자용: 설치, 개인 API와 계정 연결, 기능별 사용 순서 |
 | `04_Workmate_Assets_v1.0.zip` | 영상, Excel 예제, UAT 산출물, 화면 원본, Windows Mini 실행 패키지 |
 
-두 HTML은 이미지와 영상 표지를 파일 안에 포함하므로 단독으로 이동해도 본문·사진을 볼 수 있습니다. 첨부자료 ZIP은 HTML과 같은 폴더에 풀어 `Workmate_Assets/` 폴더를 두세요. 영상·예제 링크는 이 폴더를 읽습니다. 문서·영상 열기는 인터넷 없이 가능하지만 앱 설치 의존성과 LLM·OAuth 연결은 별도 준비가 필요합니다.
+두 HTML 각각에 사진과 한국어 자막 영상 6편을 모두 포함했습니다. HTML 파일 하나만 열면 별도 압축 해제나 인터넷 연결 없이 본문·사진·영상을 볼 수 있습니다. 파일 크기는 각각 약 43MB입니다. Excel 예제·UAT 산출물·Windows Mini 설치 파일·MP4 원본을 따로 사용할 때만 첨부자료 ZIP을 HTML과 같은 폴더에 풀어 `Workmate_Assets/` 폴더를 두세요. 앱 설치 의존성과 LLM·OAuth 연결은 별도 준비가 필요합니다.
 
 ## 바탕화면 Mini와 MCP 연결
 

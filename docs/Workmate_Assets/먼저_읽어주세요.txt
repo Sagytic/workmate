@@ -1,4 +1,4 @@
-﻿Workmate v1.0 첨부자료
+Workmate v1.0 첨부자료
 
 1. HTML과 이 폴더의 위치
    02_Workmate_Service_Overview_v1.0.html
@@ -7,7 +7,8 @@
      자료목록.html
      videos/ · excel/ · uat/ · screenshots/ · mail-calendar/ · install/
 
-HTML 안의 사진은 자체 내장되어 있습니다. 영상과 예제는 Workmate_Assets 폴더를 사용합니다.
+두 HTML 안에 사진과 자막 포함 영상 6편이 모두 내장되어 있습니다. HTML만 열어 바로 볼 수 있으며, 영상 재생에는 이 폴더나 압축 해제가 필요하지 않습니다.
+Excel 예제·UAT 산출물·Windows Mini 설치 파일·MP4 원본을 따로 사용할 때 이 폴더를 이용합니다.
 첨부자료 ZIP을 다시 같은 이름의 중첩 폴더에 넣지 말고 위 구조로 풀어주세요.
 두 HTML을 ZIP 프로그램의 미리보기로 열지 말고 디스크에 저장해 브라우저로 여세요.
 
