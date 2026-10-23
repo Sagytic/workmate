@@ -2,7 +2,7 @@
 
 Windows Mini가 바탕화면과 트레이에 머무르며 빠른 대화와 업무 알림을 제공합니다. `Ctrl+Alt+Space`로 열고, 창을 닫아도 곁에 남습니다. 개인 업무의 기억·메일·일정·Excel·UAT를 웹 워크스페이스에서 실행하고, 선택한 기본·맞춤 에이전트와 문서·업무앱을 MCP로 다른 AI 도구에 연결합니다. Mini와 로컬 서버가 실행되는 동안 사용할 수 있습니다.
 
-[워크스페이스 열기](https://workmate-otpo.onrender.com/) · [서비스 소개와 영상](https://sagytic.github.io/workmate/) · [설치·개인 API 사용 안내](https://sagytic.github.io/workmate/03_Workmate_User_Manual_v1.0.html) · [Windows Mini와 실행 패키지](https://github.com/Sagytic/workmate/releases/tag/v1.0.0)
+[워크스페이스 열기](https://workmate-otpo.onrender.com/) · [서비스 소개와 영상](https://sagytic.github.io/workmate/) · [설치·개인 API 사용 안내](https://sagytic.github.io/workmate/03_Workmate_사용자매뉴얼_v1.0.html) · [Windows Mini와 실행 패키지](https://github.com/Sagytic/workmate/releases/tag/v1.0.0)
 
 ## v1.0 제출 자료
 
@@ -11,8 +11,8 @@ Windows Mini가 바탕화면과 트레이에 머무르며 빠른 대화와 업�
 | 파일 | 목적 |
 |---|---|
 | `01_Workmate_Code_v1.0.zip` | 전체 소스코드, 빌드된 웹 화면, 설정 예시, 실행 스크립트와 검증 코드 |
-| `02_Workmate_Service_Overview_v1.0.html` | 심사·소개용: 서비스 목적, 바탕화면 Mini의 차별점, 주요 활용 장면 |
-| `03_Workmate_User_Manual_v1.0.html` | 사용자용: 설치, 개인 API와 계정 연결, 기능별 사용 순서 |
+| `02_Workmate_서비스소개서_v1.0.html` | 심사·소개용: 서비스 목적, 바탕화면 Mini의 차별점, 주요 활용 장면 |
+| `03_Workmate_사용자매뉴얼_v1.0.html` | 사용자용: 설치, 개인 API와 계정 연결, 기능별 사용 순서 |
 | `04_Workmate_Assets_v1.0.zip` | 영상, Excel 예제, UAT 산출물, 화면 원본, Windows Mini 실행 패키지 |
 
 두 HTML 각각에 사진과 한국어 자막 영상 6편을 모두 포함했습니다. HTML 파일 하나만 열면 별도 압축 해제나 인터넷 연결 없이 본문·사진·영상을 볼 수 있습니다. 파일 크기는 각각 약 43MB입니다. Excel 예제·UAT 산출물·Windows Mini 설치 파일·MP4 원본을 따로 사용할 때만 첨부자료 ZIP을 HTML과 같은 폴더에 풀어 `Workmate_Assets/` 폴더를 두세요. 앱 설치 의존성과 LLM·OAuth 연결은 별도 준비가 필요합니다.
@@ -26,7 +26,7 @@ Windows Mini가 바탕화면과 트레이에 머무르며 빠른 대화와 업�
 
 MCP 서버 주소는 연결 화면에 표시됩니다. 접근 키를 URL에 넣지 말고 `Authorization: Bearer <접근 키>` 헤더에 설정하세요. 키는 원문을 한 번만 보여주고 서버에는 해시로 저장합니다. 모델 분석은 개인이 연결한 API를 사용합니다.
 
-[Mini·MCP 사용 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/01_Mini_MCP.mp4) · [MCP 설정 안내](https://sagytic.github.io/workmate/03_Workmate_User_Manual_v1.0.html#mcp) · [공식 SDK 연결 예제](scripts/mcp_client_example.py)
+[Mini·MCP 사용 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/01_Mini_MCP.mp4) · [MCP 설정 안내](https://sagytic.github.io/workmate/03_Workmate_사용자매뉴얼_v1.0.html#mcp) · [공식 SDK 연결 예제](scripts/mcp_client_example.py)
 
 ## 개인 비서 데스크와 Google 읽기 연결
 
@@ -53,7 +53,7 @@ MCP 서버 주소는 연결 화면에 표시됩니다. 접근 키를 URL에 넣�
 
 Google·Microsoft의 읽기 커넥터 구현과 사용자의 계정 인증은 별개입니다. 실제 로그인·동의는 본인의 앱 설정과 제공자·조직 승인 후 완료합니다. Microsoft 앱 등록이 허용되지 않으면 관리자 승인 후 연결하고 EML·ICS 파일을 먼저 사용할 수 있습니다. 메일 발송·메일 라벨 변경·외부 캘린더 쓰기는 수행하지 않습니다.
 
-[Google 공식 웹 OAuth](https://developers.google.com/identity/protocols/oauth2/web-server) · [Gmail 권한](https://developers.google.com/workspace/gmail/api/auth/scopes) · [토큰 만료](https://developers.google.com/identity/protocols/oauth2/#expiration) · [개인 비서 제품 비교와 적용](https://sagytic.github.io/workmate/03_Workmate_User_Manual_v1.0.html#global-patterns) · [비서 데스크 실제 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/02_Personal_Desk.mp4)
+[Google 공식 웹 OAuth](https://developers.google.com/identity/protocols/oauth2/web-server) · [Gmail 권한](https://developers.google.com/workspace/gmail/api/auth/scopes) · [토큰 만료](https://developers.google.com/identity/protocols/oauth2/#expiration) · [개인 비서 제품 비교와 적용](https://sagytic.github.io/workmate/03_Workmate_사용자매뉴얼_v1.0.html#global-patterns) · [비서 데스크 실제 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/02_Personal_Desk.mp4)
 
 배포 관리자가 승인된 웹 앱을 준비했다면 서버 환경변수 `WORKMATE_GOOGLE_CLIENT_ID`, `WORKMATE_GOOGLE_CLIENT_SECRET`으로 기본 앱을 구성할 수 있습니다. 방문자는 각자 Google 연결 버튼에서 로그인·동의하며, 토큰·가져온 자료는 방문자별로 분리됩니다. 직접 입력한 BYO 설정은 해당 방문자에서 기본 앱을 덮어씁니다. **현재 공개 서비스에는 공용 Google 앱이 설정되어 있지 않아 본인의 앱 등록이 필요합니다.** 환경변수의 비밀값을 소스·영상·공개 로그에 포함하지 않습니다.
 
@@ -87,7 +87,7 @@ Google·Microsoft의 읽기 커넥터 구현과 사용자의 계정 인증은 �
 
 날짜만 명시된 기한은 날짜로 보존하며 다음 날부터 기한 경과로 집계합니다. 기한이나 담당자가 원문에 없으면 비워 둡니다. 실행 상태가 완료되었다고 후속 업무까지 완료 처리하지 않습니다. 에이전트가 외부 메일·웹사이트를 자율 조작하거나 새 미션을 계속 만드는 구조는 아닙니다.
 
-[메일·일정 활용 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/03_Gmail_Calendar.mp4) · [에이전트 활용 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/04_Agents_Collaboration.mp4) · [사용 안내](https://sagytic.github.io/workmate/03_Workmate_User_Manual_v1.0.html#agent-studio)
+[메일·일정 활용 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/03_Gmail_Calendar.mp4) · [에이전트 활용 영상](https://sagytic.github.io/workmate/Workmate_Assets/videos/04_Agents_Collaboration.mp4) · [사용 안내](https://sagytic.github.io/workmate/03_Workmate_사용자매뉴얼_v1.0.html#agent-studio)
 
 참고한 공식 설계 자료: [Dot 작업과 기억](https://learn.chatgpt.com/docs/dots/tasks-and-memory), [Muse 개인 에이전트](https://about.fb.com/news/2026/09/introducing-muse-personal-ai-agent/), [Notion Custom Agents](https://www.notion.com/help/custom-agents). 개인 맥락·목표의 후속 행동·프로필별 지침과 자료 범위에 관한 설계를 참고했으며 제품 연동을 뜻하지 않습니다. 확인일 2026-10-23.
 

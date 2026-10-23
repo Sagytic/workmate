@@ -1,8 +1,8 @@
 Workmate v1.0 첨부자료
 
 1. HTML과 이 폴더의 위치
-   02_Workmate_Service_Overview_v1.0.html
-   03_Workmate_User_Manual_v1.0.html
+   02_Workmate_서비스소개서_v1.0.html
+   03_Workmate_사용자매뉴얼_v1.0.html
    Workmate_Assets/
      자료목록.html
      videos/ · excel/ · uat/ · screenshots/ · mail-calendar/ · install/
