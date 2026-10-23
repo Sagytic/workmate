@@ -451,11 +451,40 @@ class GoogleWorkspaceConnector:
             return {'messages': items, 'count': len(items), 'truncated': bool(body.get('nextPageToken')),
                     'search_scope': '이번에 읽은 받은편지함 항목', 'warnings': warnings}
 
-    def read_events(self, days=7, limit=25):
-        with self._lock:
-            self.events.clear()
+    def read_events(self, days=7, limit=25, start_date=None, end_date=None):
+        if days not in (7, 14, 30, 90):
+            raise HTTPException(400, '일정 조회 기간은 7일, 14일, 30일 또는 90일을 선택하세요.')
+        if (start_date is None) != (end_date is None):
+            raise HTTPException(400, '조회 시작일과 종료일을 함께 입력하세요.')
+        korea = timezone(timedelta(hours=9))
+        if start_date is not None:
+            try:
+                if not all(isinstance(value, str) and re.fullmatch(r'[0-9]{4}-[0-9]{2}-[0-9]{2}', value)
+                           for value in (start_date, end_date)):
+                    raise ValueError()
+                first, last = date.fromisoformat(start_date), date.fromisoformat(end_date)
+            except ValueError:
+                raise HTTPException(400, '조회 날짜는 YYYY-MM-DD 형식의 올바른 날짜로 입력하세요.') from None
+            if last < first:
+                raise HTTPException(400, '조회 종료일은 시작일보다 빠를 수 없습니다.')
+            if (last - first).days + 1 > 366:
+                raise HTTPException(400, '조회 기간은 시작일과 종료일을 포함해 366일 이내로 선택하세요.')
+            try:
+                # Date inputs describe Korean calendar days, including the end day.
+                start = datetime(first.year, first.month, first.day, tzinfo=korea)
+                following = last + timedelta(days=1)
+                end = datetime(following.year, following.month, following.day, tzinfo=korea)
+            except (ValueError, OverflowError):
+                raise HTTPException(400, '조회 날짜가 지원 범위를 벗어났습니다.') from None
+            range_start, range_end = first.isoformat(), last.isoformat()
+        else:
+            # Preserve the existing rolling window when no date range is supplied.
             start = datetime.now(timezone.utc)
             end = start + timedelta(days=days)
+            range_start = start.astimezone(korea).date().isoformat()
+            range_end = (end - timedelta(microseconds=1)).astimezone(korea).date().isoformat()
+        with self._lock:
+            self.events.clear()
             # Do not override timeZone: its value explains DATE boundaries.
             body = self._api(EVENTS_URL, {'timeMin': start.isoformat(), 'timeMax': end.isoformat(),
                 'maxResults': limit, 'singleEvents': 'true', 'orderBy': 'startTime', 'showDeleted': 'false'})
@@ -466,7 +495,8 @@ class GoogleWorkspaceConnector:
                      if isinstance(value, dict) and isinstance(value.get('id'), str)]
             self.events = {item['id']: item for item in items}
             return {'events': items, 'count': len(items), 'truncated': bool(body.get('nextPageToken')),
-                    'from': start.isoformat(), 'to': end.isoformat(), 'calendar': 'primary'}
+                    'from': start.isoformat(), 'to': end.isoformat(), 'calendar': 'primary',
+                    'range_start': range_start, 'range_end': range_end}
 
     def import_selected(self, message_ids, event_ids, project):
         with self._lock:
@@ -537,10 +567,10 @@ def install_google_workspace(app, ctx):
         return ctx.google.read_messages(limit, q)
 
     @app.get('/api/google/events')
-    def events(days: int = Query(default=7), limit: int = Query(default=25, ge=1, le=50)):
-        if days not in (7, 14):
-            raise HTTPException(400, '일정 조회 기간은 7일 또는 14일을 선택하세요.')
-        return ctx.google.read_events(days, limit)
+    def events(days: int = Query(default=7), limit: int = Query(default=25, ge=1, le=50),
+               start_date: str | None = Query(default=None, max_length=10),
+               end_date: str | None = Query(default=None, max_length=10)):
+        return ctx.google.read_events(days, limit, start_date, end_date)
 
     @app.post('/api/google/import')
     def selected_import(body: GoogleImportRequest):

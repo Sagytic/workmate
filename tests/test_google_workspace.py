@@ -1,7 +1,7 @@
 import base64
 import hashlib
 import json
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 from urllib.parse import parse_qs, urlsplit
 
@@ -309,6 +309,85 @@ def test_bounded_read_no_page_follow_selected_import_is_idempotent(setup):
     assert repeated['created'] == 0 and repeated['existing'] == 1
     ctx.store.put('connected_items', {'id': 'microsoft-item', 'provider': 'm365', 'kind': 'event'})
     assert client.get('/api/google/status').json()['imported'] == {'messages': 1, 'events': 0, 'total': 1}
+
+
+@pytest.mark.parametrize('days', [None, 7, 14, 30, 90])
+def test_calendar_presets_keep_rolling_window_and_support_later_trips(setup, monkeypatch, days):
+    client, _, provider, _ = setup
+    connect(client)
+    instant = datetime(2026, 10, 23, 16, 30, tzinfo=timezone.utc)
+
+    class FixedDatetime(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return instant.astimezone(tz)
+
+    monkeypatch.setattr('backend.google_workspace.datetime', FixedDatetime)
+    response = client.get('/api/google/events', params={} if days is None else {'days': days})
+    assert response.status_code == 200
+    result, call = response.json(), provider.calls[-1]
+    expected_end = instant + timedelta(days=7 if days is None else days)
+    assert call.url.params['timeMin'] == result['from'] == instant.isoformat()
+    assert call.url.params['timeMax'] == result['to'] == expected_end.isoformat()
+    assert result['range_start'] == '2026-10-24'
+    assert result['range_end'] == expected_end.astimezone(timezone(timedelta(hours=9))).date().isoformat()
+    assert call.url.params['maxResults'] == '25' and 'timeZone' not in call.url.params
+
+
+def test_calendar_explicit_november_range_includes_end_day_preserves_event_zone(setup):
+    client, ctx, provider, _ = setup
+    connect(client)
+    trip = event(start={'date': '2026-11-01'}, end={'date': '2026-11-02'})
+    provider.responses[EVENTS_URL] = (200, {'items': [trip], 'timeZone': 'America/New_York'}, {})
+    response = client.get('/api/google/events', params={
+        'start_date': '2026-11-01', 'end_date': '2026-11-30', 'limit': 1})
+    assert response.status_code == 200
+    result, call = response.json(), provider.calls[-1]
+    assert call.url.params['timeMin'] == result['from'] == '2026-11-01T00:00:00+09:00'
+    assert call.url.params['timeMax'] == result['to'] == '2026-12-01T00:00:00+09:00'
+    assert result['range_start'] == '2026-11-01' and result['range_end'] == '2026-11-30'
+    assert call.url.params['singleEvents'] == 'true' and 'timeZone' not in call.url.params
+    assert result['events'][0]['start_at'] == '2026-11-01T00:00:00-04:00'
+    assert result['events'][0]['end_at'] == '2026-11-02T00:00:00-05:00'
+    assert result['events'][0]['original_end_date'] == '2026-11-02'
+    assert result['events'][0]['is_all_day'] and not result['events'][0]['time_uncertain']
+    assert not ctx.store.all('documents') and not ctx.store.all('connected_items')
+
+
+@pytest.mark.parametrize('first,last,expected_days', [
+    ('2028-02-29', '2028-02-29', 1),
+    ('2028-01-01', '2028-12-31', 366),
+])
+def test_calendar_custom_range_accepts_same_day_and_366_day_boundary(setup, first, last, expected_days):
+    client, _, provider, _ = setup
+    connect(client)
+    response = client.get('/api/google/events', params={'start_date': first, 'end_date': last})
+    assert response.status_code == 200
+    bounds = provider.calls[-1].url.params
+    assert datetime.fromisoformat(bounds['timeMax']) - datetime.fromisoformat(bounds['timeMin']) == timedelta(days=expected_days)
+    assert response.json()['range_start'] == first and response.json()['range_end'] == last
+
+
+@pytest.mark.parametrize('params', [
+    {'start_date': '2026-11-01'},
+    {'end_date': '2026-11-30'},
+    {'start_date': '', 'end_date': ''},
+    {'start_date': '2026-11-30', 'end_date': '2026-11-01'},
+    {'start_date': '2026-01-01', 'end_date': '2027-01-02'},
+    {'start_date': '2026-02-29', 'end_date': '2026-03-01'},
+    {'start_date': '20261101', 'end_date': '2026-11-30'},
+    {'start_date': '2026-11-1', 'end_date': '2026-11-30'},
+    {'start_date': '2026/11/01', 'end_date': '2026-11-30'},
+    {'start_date': '9999-12-31', 'end_date': '9999-12-31'},
+    {'days': 365},
+])
+def test_calendar_rejects_invalid_ranges_before_network_or_cache_changes(setup, params):
+    client, ctx, provider, _ = setup
+    ctx.google.events['previous'] = {'id': 'previous'}
+    response = client.get('/api/google/events', params=params)
+    assert response.status_code == 400
+    assert not provider.calls
+    assert ctx.google.events == {'previous': {'id': 'previous'}}
 
 
 def test_gmail_invalid_id_does_not_become_url(setup):
