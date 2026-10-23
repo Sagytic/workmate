@@ -1,0 +1,256 @@
+{
+  "synthetic": true,
+  "sourceLabel": "업무 예제",
+  "version": 3,
+  "examples": [
+    {
+      "id": "demo_v3_example_excel_changes",
+      "title": "수식이 깨진 수정본 검수",
+      "category": "Excel 검증",
+      "description": "기준 파일과 의도적으로 변경한 수정본을 비교합니다. 수식 상수 치환, 누락, 깨진 참조와 업무 입력 오류를 함께 확인하고 복원 가능한 범위를 구분합니다.",
+      "agent": "excel",
+      "input": {
+        "baseline": "baseline",
+        "current": "changed"
+      },
+      "expected": "변경 목록과 오류 근거, 복원 가능한 수식이 표시됩니다. 실제 재계산을 수행한 것으로 처리하지 않습니다.",
+      "estimated_seconds": 3,
+      "project": "ERP 전환",
+      "difficulty": "입문",
+      "uses_llm": false
+    },
+    {
+      "id": "demo_v3_example_excel_reordered",
+      "title": "행 순서만 바뀐 파일 비교",
+      "category": "Excel 검증",
+      "description": "동일한 자료의 행을 재배치한 파일을 비교합니다. 셀 주소 차이와 실제 업무 값 변경을 구분하는 ID 대응 방식을 확인합니다.",
+      "agent": "excel",
+      "input": {
+        "baseline": "baseline",
+        "current": "reordered"
+      },
+      "expected": "지원하는 정적 비교 범위에서 변경과 발견 사항이 0건입니다. 전체 Excel 계산의 정확성을 인증하는 결과는 아닙니다.",
+      "estimated_seconds": 3,
+      "project": "ERP 전환",
+      "difficulty": "입문",
+      "uses_llm": false
+    },
+    {
+      "id": "demo_v3_example_excel_batch",
+      "title": "수정본 3개 일괄 품질 검수",
+      "category": "Excel 검증",
+      "description": "오류 수정본, 정상 입력본과 행 재배치본을 하나의 기준과 독립적으로 비교합니다. 각 파일의 검사 범위와 HTML·CSV 보고서를 확인합니다.",
+      "agent": "excel",
+      "input": {
+        "baseline": "baseline",
+        "currents": [
+          "changed",
+          "clean",
+          "reordered"
+        ]
+      },
+      "expected": "파일별 결과와 합산 현황, 개별 보고서가 제공됩니다. 파일을 병합하거나 일괄 자동 복원하지 않습니다.",
+      "estimated_seconds": 5,
+      "project": "백오피스",
+      "difficulty": "기본",
+      "uses_llm": false
+    },
+    {
+      "id": "demo_v3_example_knowledge_portal",
+      "title": "긴급 요청 기준을 근거로 답하기",
+      "category": "업무 지식",
+      "description": "요구사항 변경안과 협의 메모에서 긴급 요청 응답 시간, 미확정 권한과 제외 범위를 찾습니다. 결정된 내용과 추가 확인이 필요한 내용을 분리합니다.",
+      "agent": "knowledge",
+      "input": {
+        "question": "고객 포털 긴급 요청의 초동 응답 목표와 운영 시간은 무엇인가요? 분류 권한과 휴일 처리는 확정되었나요? 문서와 문단 근거를 붙여 답해주세요.",
+        "document_ids": [
+          "demo_v3_doc_requirements_v2",
+          "demo_v3_doc_portal_meeting"
+        ],
+        "project": "고객 포털"
+      },
+      "expected": "4시간·평일 운영 시간의 문단 근거와 분류 권한·휴일 처리의 미확정 상태를 구분한 답변을 확인합니다.",
+      "estimated_seconds": 20,
+      "project": "고객 포털",
+      "difficulty": "입문",
+      "uses_llm": true
+    },
+    {
+      "id": "demo_v3_example_knowledge_settlement",
+      "title": "정산 보류와 기술적 실패 구분",
+      "category": "업무 지식",
+      "description": "운영 가이드와 장애 회고를 함께 참고해, 같은 파일 재시도와 보완 자료 재접수를 구분할 기준을 찾습니다. 실제 원장 처리 지시를 만드는 예제는 아닙니다.",
+      "agent": "knowledge",
+      "input": {
+        "question": "정산 금액 차이로 인한 보류와 기술적 실패는 어떻게 구분하나요? 재처리 전에 확인할 자료와 중복 방지 키를 근거와 함께 정리해주세요.",
+        "document_ids": [
+          "demo_v3_doc_finance_v2",
+          "demo_v3_doc_incident_retro"
+        ],
+        "project": "금융 정산"
+      },
+      "expected": "보완 대기와 제한된 기술 재시도의 차이, 접수 차수·파일 해시·작업 단계의 근거를 확인합니다.",
+      "estimated_seconds": 20,
+      "project": "금융 정산",
+      "difficulty": "기본",
+      "uses_llm": true
+    },
+    {
+      "id": "demo_v3_example_knowledge_quote",
+      "title": "견적 검토 질문 목록 만들기",
+      "category": "업무 지식",
+      "description": "견적 검토 기준에서 금액 외에 확인할 조건과 누락 자료의 처리 원칙을 찾습니다. 근거에 없는 계약 조건을 임의로 채우지 않는지 살펴봅니다.",
+      "agent": "knowledge",
+      "input": {
+        "question": "견적 총액 외에 비교할 조건과 공급사에 확인할 질문을 정리해주세요. 공수가 빠졌는지 확인하는 질문과 추정해서는 안 되는 항목도 근거와 함께 알려주세요.",
+        "document_ids": [
+          "demo_v3_doc_quote_review"
+        ],
+        "project": "백오피스"
+      },
+      "expected": "납기·포함 범위·지급 조건·공수 구성의 확인 질문을 문서 근거와 연결합니다. 실제 공급사 연락은 하지 않습니다.",
+      "estimated_seconds": 20,
+      "project": "백오피스",
+      "difficulty": "입문",
+      "uses_llm": true
+    },
+    {
+      "id": "demo_v3_example_analyst_requirements",
+      "title": "요구사항 변경의 개발·UAT 영향",
+      "category": "변경 영향 분석",
+      "description": "고객 포털 요구사항 v1.0과 v2.0을 비교해 입력 규칙, 기존 데이터, 화면·서버 검증과 UAT가 함께 바뀌어야 하는 부분을 찾습니다.",
+      "agent": "analyst",
+      "input": {
+        "before_id": "demo_v3_doc_requirements_v1",
+        "after_id": "demo_v3_doc_requirements_v2",
+        "question": "변경·유지·추가 항목을 구분하고 화면, 서버 검증, 기존 데이터 보완, UAT와 운영 인계에 미치는 영향을 근거와 함께 분석해주세요."
+      },
+      "expected": "담당자·마감일 필수화, 완료 메모, 긴급 응답 기준과 필터 변경의 영향 및 미결정 항목이 제시됩니다. 구현 완료를 뜻하지 않습니다.",
+      "estimated_seconds": 25,
+      "project": "고객 포털",
+      "difficulty": "기본",
+      "uses_llm": true
+    },
+    {
+      "id": "demo_v3_example_analyst_finance",
+      "title": "정산 운영 변경의 빠진 영향 찾기",
+      "category": "변경 영향 분석",
+      "description": "접수 마감 변경만 읽으면 놓치기 쉬운 검토 역할, 재처리 키와 경계 시각 테스트를 두 운영 가이드에서 비교합니다.",
+      "agent": "analyst",
+      "input": {
+        "before_id": "demo_v3_doc_finance_v1",
+        "after_id": "demo_v3_doc_finance_v2",
+        "question": "접수 마감, 검토 역할, 중복 방지와 장애 재개 규칙의 변경을 비교하고, 갱신할 산출물과 필요한 UAT 경계값을 알려주세요."
+      },
+      "expected": "17:00→16:30 변경, 검토 역할 분리, 재처리 키와 운영·인수 자료의 영향이 드러납니다. 실제 금융 규정으로 단정하지 않습니다.",
+      "estimated_seconds": 25,
+      "project": "금융 정산",
+      "difficulty": "심화",
+      "uses_llm": true
+    },
+    {
+      "id": "demo_v3_example_reporter_erp",
+      "title": "ERP 전환 주간 보고 초안",
+      "category": "업무 보고",
+      "description": "ERP 업무의 기한·상태·완료 시점을 근거로 최근 7일 보고를 작성합니다. 완료 시점을 최근 수정 시점과 구분하고 근거 기록을 확인합니다.",
+      "agent": "reporter",
+      "input": {
+        "project": "ERP 전환",
+        "period_days": 7
+      },
+      "expected": "기간 내 완료, 진행·대기, 기한 문제와 다음 행동이 작업 ID에 연결됩니다. 완료 시점과 근거가 표시되며 기록에 없는 진척률은 만들지 않습니다.",
+      "estimated_seconds": 20,
+      "project": "ERP 전환",
+      "difficulty": "입문",
+      "uses_llm": true
+    },
+    {
+      "id": "demo_v3_example_reporter_all",
+      "title": "5개 프로젝트 통합 주간 보고",
+      "category": "업무 보고",
+      "description": "프로젝트별 업무를 모아 부문 관점의 완료 사항, 막힌 결정과 다가오는 기한을 살펴봅니다. 보고서의 주장과 원래 작업 기록을 대조합니다.",
+      "agent": "reporter",
+      "input": {
+        "period_days": 7,
+        "project": ""
+      },
+      "expected": "ERP·금융·포털·백오피스·공통 업무를 구분한 보고와 작업 근거를 확인합니다. 데이터가 없는 실적이나 절감 비용은 만들어 넣지 않습니다.",
+      "estimated_seconds": 25,
+      "project": "",
+      "difficulty": "기본",
+      "uses_llm": true
+    },
+    {
+      "id": "demo_v3_example_builder",
+      "title": "이슈 접수 앱 새로 만들기",
+      "category": "업무 앱",
+      "description": "설명에서 허용된 입력 구조를 구성하고 실제로 데이터를 저장할 수 있는 로컬 앱을 만듭니다. 새 앱은 빈 목록으로 시작합니다.",
+      "agent": "builder",
+      "input": {
+        "prompt": "이슈 접수 앱을 만들어줘. 기본 업무명·담당자·마감일·상태·완료 메모를 유지하고, 이슈 구분(오류/개선/문의) 선택 항목과 영향도(낮음/보통/높음) 선택 항목을 필수로 추가해줘. 예상 공수는 0~160 숫자 입력으로 추가해줘. 외부 연동은 필요 없어."
+      },
+      "expected": "허용된 사용자 정의 필드가 있는 실제 로컬 CRUD 앱과 스키마 파일을 확인합니다. 앱 생성만으로 UAT 통과를 주장하지 않습니다.",
+      "estimated_seconds": 20,
+      "project": "공통 업무",
+      "difficulty": "기본",
+      "uses_llm": true
+    },
+    {
+      "id": "demo_v3_example_developer",
+      "title": "완료 메모 규칙 변경 후 실제 UAT",
+      "category": "개발·UAT",
+      "description": "준비된 고객 요청 앱의 완료 메모와 담당자 규칙을 강화합니다. 최초 실행 시 변경을 만들고 브라우저 테스트를 실행합니다. 이미 적용된 규칙은 변경 없음으로 표시될 수 있습니다.",
+      "agent": "developer",
+      "input": {
+        "app_id": "demo_v3_app_requests",
+        "requirement": "완료 상태에서는 완료 메모를 반드시 입력하도록 바꾸고, 담당자도 필수 입력으로 바꿔줘. 기존 사용자 정의 필드와 데이터는 유지해줘."
+      },
+      "expected": "실제 실행 가능한 경우에만 브라우저 증거와 UAT 판정을 제공합니다. 브라우저가 없거나 검증이 실패하면 성공으로 처리하지 않습니다.",
+      "estimated_seconds": 45,
+      "project": "고객 포털",
+      "difficulty": "심화",
+      "uses_llm": true
+    },
+    {
+      "id": "demo_v3_example_automation",
+      "title": "Excel 검수 후 접수 앱에 1회 등록",
+      "category": "업무 자동화",
+      "description": "정상 파일을 실제로 검사하고 고객 요청 앱에 검수 결과를 한 번 등록합니다. 저장된 자동화의 반복 스케줄은 꺼진 상태로 유지합니다. 같은 입력의 재실행은 중복 등록을 막습니다.",
+      "agent": "automation",
+      "input": {
+        "workflow_id": "demo_v3_workflow_review",
+        "baseline": "baseline",
+        "current": "clean",
+        "app_id": "demo_v3_app_requests",
+        "record_values": {
+          "module": "공통",
+          "request_type": "문의",
+          "effort_hours": 0,
+          "customer_email": "demo-review@example.test"
+        }
+      },
+      "expected": "정적 검사 근거와 실제 저장된 접수 레코드를 확인합니다. Excel 재계산이나 외부 시스템 등록을 수행했다고 표시하지 않습니다.",
+      "estimated_seconds": 4,
+      "project": "고객 포털",
+      "difficulty": "기본",
+      "uses_llm": false
+    },
+    {
+      "id": "demo_v3_example_assistant",
+      "title": "검토할 일을 개인 업무로 등록",
+      "category": "개인 업무",
+      "description": "요구사항 변경안을 확인할 개인 업무를 실제 작업 목록에 추가합니다. 생성 후 담당자·기한·우선순위를 편집하고 완료 상태를 직접 확인할 수 있습니다.",
+      "agent": "assistant",
+      "input": {
+        "manual": true,
+        "message": "요구사항 v2.0의 미확정 항목을 검토하고 다음 협의 질문을 정리하기",
+        "project": "공통 업무"
+      },
+      "expected": "수동 업무가 등록됩니다. 실제로 검토를 수행하거나 외부 알림을 발송한 것으로 처리하지 않습니다.",
+      "estimated_seconds": 1,
+      "project": "공통 업무",
+      "difficulty": "입문",
+      "uses_llm": false
+    }
+  ]
+}

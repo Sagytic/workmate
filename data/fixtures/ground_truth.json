@@ -1,0 +1,70 @@
+{
+  "synthetic": true,
+  "sheet": "업무내역",
+  "rows": 8,
+  "source": "Created for Workmate deterministic validation, no real company data",
+  "expected": {
+    "changed": {
+      "findings": [
+        [
+          "F2",
+          "formula_replaced"
+        ],
+        [
+          "F3",
+          "missing_formula"
+        ],
+        [
+          "F4",
+          "broken_reference"
+        ],
+        [
+          "F4",
+          "formula_changed"
+        ],
+        [
+          "C5",
+          "required_value"
+        ],
+        [
+          "A6",
+          "duplicate_id"
+        ],
+        [
+          "A7",
+          "duplicate_id"
+        ],
+        [
+          "G8",
+          "invalid_status"
+        ],
+        [
+          "G8",
+          "validation_changed"
+        ],
+        [
+          "D9",
+          "negative_input"
+        ]
+      ],
+      "repairable": [
+        "F2",
+        "F3",
+        "F4"
+      ]
+    },
+    "clean": {
+      "findings": [],
+      "changes": 0
+    },
+    "reordered": {
+      "findings": [],
+      "changes": 0
+    }
+  },
+  "authoring": {
+    "tool": "@oai/artifact-tool",
+    "recalculation": "Artifact tool during fixture creation; product analyzer does not calculate Excel",
+    "intentional_errors": "changed.xlsx contains deliberate corruptions and must not pass quality checks"
+  }
+}

@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: workmate
+    runtime: docker
+    plan: free
+    region: singapore
+    healthCheckPath: /api/health
+    envVars:
+      - key: WORKMATE_MAX_VISITORS
+        value: 8
+      - key: WORKMATE_CLOUD_DATA
+        value: /tmp/workmate-sessions

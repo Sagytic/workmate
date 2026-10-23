@@ -1,0 +1,13 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+node_modules/
+data/*.db*
+data/uploads/
+data/artifacts/
+data/uat/
+data/cloud/
+verification/
+.env-*
+frontend/dist/

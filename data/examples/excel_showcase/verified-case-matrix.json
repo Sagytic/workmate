@@ -1,0 +1,1026 @@
+{
+  "case_count": 59,
+  "passed": 59,
+  "counts": {
+    "errors": 26,
+    "warnings": 23,
+    "changes": 45
+  },
+  "repair_count": 5,
+  "remaining_counts": {
+    "errors": 22,
+    "warnings": 21,
+    "changes": 40
+  },
+  "original_preserved": true,
+  "recalculated_by_agent": false,
+  "formula_scope": {
+    "method": "same_row_reference_static",
+    "total": 51,
+    "supported": 41,
+    "known_errors": 2,
+    "unverified": 8
+  },
+  "coverage": [
+    {
+      "sheet": "01_수식복원",
+      "status": "business_rules",
+      "rows": 5,
+      "baseline_rows": 5,
+      "layout_same": true,
+      "matched_unique_rows": 5,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "02_데이터검사",
+      "status": "business_rules",
+      "rows": 11,
+      "baseline_rows": 11,
+      "layout_same": true,
+      "matched_unique_rows": 11,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "03_행비교",
+      "status": "business_rules",
+      "rows": 4,
+      "baseline_rows": 4,
+      "layout_same": true,
+      "matched_unique_rows": 3,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "04_ID안전성",
+      "status": "business_rules",
+      "rows": 8,
+      "baseline_rows": 8,
+      "layout_same": true,
+      "matched_unique_rows": 0,
+      "ambiguous_or_missing_key_rows": 5,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "05_유효성규칙",
+      "status": "business_rules",
+      "rows": 4,
+      "baseline_rows": 4,
+      "layout_same": true,
+      "matched_unique_rows": 4,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "06_수식검사범위",
+      "status": "business_rules",
+      "rows": 10,
+      "baseline_rows": 10,
+      "layout_same": true,
+      "matched_unique_rows": 10,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "07_저장오류값",
+      "status": "business_rules",
+      "rows": 9,
+      "baseline_rows": 9,
+      "layout_same": true,
+      "matched_unique_rows": 9,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "08_열구조변경",
+      "status": "business_rules",
+      "rows": 1,
+      "baseline_rows": 1,
+      "layout_same": false,
+      "matched_unique_rows": 1,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "09_부분스키마",
+      "status": "keyed_comparison",
+      "rows": 1,
+      "baseline_rows": 1,
+      "layout_same": true,
+      "matched_unique_rows": 1,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [
+        "quantity",
+        "status",
+        "total",
+        "unit_price"
+      ],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "10_ID헤더없음",
+      "status": "static_only"
+    },
+    {
+      "sheet": "11_중복헤더",
+      "status": "static_only"
+    },
+    {
+      "sheet": "12_지원함수",
+      "status": "business_rules",
+      "rows": 10,
+      "baseline_rows": 10,
+      "layout_same": true,
+      "matched_unique_rows": 10,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "13_내보내기안전",
+      "status": "business_rules",
+      "rows": 1,
+      "baseline_rows": 1,
+      "layout_same": true,
+      "matched_unique_rows": 1,
+      "ambiguous_or_missing_key_rows": 0,
+      "missing_business_headers": [],
+      "key_header": "고유번호"
+    },
+    {
+      "sheet": "15_추가된시트",
+      "status": "static_only"
+    }
+  ],
+  "baseline_sha256": "738b0106cde0a6db91a4e506748ec52e82a95f1ce1f7d38dfcd8182fbfc64778",
+  "current_sha256": "3085e86002a5f9e7c25ddec4095a484eaa9004c30da2845132c16b6e078bc633",
+  "cases": [
+    {
+      "id": "F1",
+      "feature": "수식 상수화",
+      "sheet": "01_수식복원",
+      "cell": "F6",
+      "rule": "formula_replaced",
+      "repairable": true,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_replaced"
+      ],
+      "actual_repairs": [
+        {
+          "sheet": "01_수식복원",
+          "cell": "F6",
+          "before": 2000,
+          "after": "=D6*E6",
+          "rule": "formula_replaced"
+        }
+      ]
+    },
+    {
+      "id": "F2",
+      "feature": "수식 누락",
+      "sheet": "01_수식복원",
+      "cell": "F7",
+      "rule": "missing_formula",
+      "repairable": true,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "missing_formula"
+      ],
+      "actual_repairs": [
+        {
+          "sheet": "01_수식복원",
+          "cell": "F7",
+          "before": null,
+          "after": "=D7*E7",
+          "rule": "missing_formula"
+        }
+      ]
+    },
+    {
+      "id": "F3",
+      "feature": "수식 변경",
+      "sheet": "01_수식복원",
+      "cell": "F8",
+      "rule": "formula_changed",
+      "repairable": true,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_changed"
+      ],
+      "actual_repairs": [
+        {
+          "sheet": "01_수식복원",
+          "cell": "F8",
+          "before": "=D8+E8",
+          "after": "=D8*E8",
+          "rule": "formula_changed"
+        }
+      ]
+    },
+    {
+      "id": "F4",
+      "feature": "깨진 참조",
+      "sheet": "01_수식복원",
+      "cell": "F9",
+      "rule": "broken_reference",
+      "repairable": true,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "broken_reference",
+        "formula_changed"
+      ],
+      "actual_repairs": [
+        {
+          "sheet": "01_수식복원",
+          "cell": "F9",
+          "before": "=#REF!*E9",
+          "after": "=D9*E9",
+          "rule": "formula_changed"
+        }
+      ]
+    },
+    {
+      "id": "F5",
+      "feature": "수식이 텍스트로 변경",
+      "sheet": "01_수식복원",
+      "cell": "F10",
+      "rule": "formula_replaced",
+      "repairable": true,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_replaced"
+      ],
+      "actual_repairs": [
+        {
+          "sheet": "01_수식복원",
+          "cell": "F10",
+          "before": "수식 삭제",
+          "after": "=D10*E10",
+          "rule": "formula_replaced"
+        }
+      ]
+    },
+    {
+      "id": "D1",
+      "feature": "제목 필수",
+      "sheet": "02_데이터검사",
+      "cell": "B6",
+      "rule": "required_value",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "required_value"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D2",
+      "feature": "담당자 필수",
+      "sheet": "02_데이터검사",
+      "cell": "C7",
+      "rule": "required_value",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "required_value"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D3",
+      "feature": "수량 필수",
+      "sheet": "02_데이터검사",
+      "cell": "D8",
+      "rule": "required_value",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "required_value"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D4",
+      "feature": "단가 필수",
+      "sheet": "02_데이터검사",
+      "cell": "E9",
+      "rule": "required_value",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "required_value"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D5",
+      "feature": "상태 필수",
+      "sheet": "02_데이터검사",
+      "cell": "G10",
+      "rule": "required_value",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "required_value"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D6",
+      "feature": "숫자 대신 문자",
+      "sheet": "02_데이터검사",
+      "cell": "D11",
+      "rule": "numeric_input",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "numeric_input"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D7",
+      "feature": "숫자 대신 논리값",
+      "sheet": "02_데이터검사",
+      "cell": "E12",
+      "rule": "numeric_input",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "numeric_input"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D8",
+      "feature": "음수 수량",
+      "sheet": "02_데이터검사",
+      "cell": "D13",
+      "rule": "negative_input",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "negative_input"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D9",
+      "feature": "음수 단가",
+      "sheet": "02_데이터검사",
+      "cell": "E14",
+      "rule": "negative_input",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "negative_input"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D10",
+      "feature": "허용 상태",
+      "sheet": "02_데이터검사",
+      "cell": "G15",
+      "rule": "invalid_status",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "invalid_status"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "D11",
+      "feature": "0과 누락 구분",
+      "sheet": "02_데이터검사",
+      "cell": "D16",
+      "absent_rules": [
+        "required_value",
+        "negative_input",
+        "numeric_input"
+      ],
+      "note": "0은 유효한 숫자로 검사합니다.",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "R1",
+      "feature": "행 이동 오탐 방지",
+      "sheet": "03_행비교",
+      "cell": "A6:G8",
+      "no_changes_for_keys": [
+        "R-A",
+        "R-B",
+        "R-C"
+      ],
+      "note": "",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "R2",
+      "feature": "추가된 행",
+      "sheet": "03_행비교",
+      "cell": "A9",
+      "change": "row_added",
+      "key": "R-ADD",
+      "note": "",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "R3",
+      "feature": "삭제된 행",
+      "sheet": "03_행비교",
+      "cell": "기준 A9",
+      "change": "row_removed",
+      "key": "R-DELETE",
+      "note": "",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "I1",
+      "feature": "기준 중복 ID",
+      "sheet": "04_ID안전성",
+      "cell": "A6",
+      "rule": "baseline_duplicate_id",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "baseline_duplicate_id"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "I2",
+      "feature": "수정본 중복 ID",
+      "sheet": "04_ID안전성",
+      "cell": "A8",
+      "rule": "duplicate_id",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "duplicate_id"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "I3",
+      "feature": "ID 누락",
+      "sheet": "04_ID안전성",
+      "cell": "A10",
+      "rule": "missing_id",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "missing_id"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "I4",
+      "feature": "수식 ID 사용 금지",
+      "sheet": "04_ID안전성",
+      "cell": "A11",
+      "rule": "formula_id",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_id",
+        "formula_scope_unverified"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "I5",
+      "feature": "숫자/문자 ID 구분",
+      "sheet": "04_ID안전성",
+      "cell": "A12",
+      "change": "row_added",
+      "key": "1",
+      "note": "숫자 1과 문자 1을 서로 다른 ID로 처리합니다.",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "I6",
+      "feature": "공백 ID 보존",
+      "sheet": "04_ID안전성",
+      "cell": "A13",
+      "change": "row_added",
+      "key": "공백ID",
+      "note": "ID의 공백을 자동 제거하지 않습니다.",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "I7",
+      "feature": "모호한 행의 수식 복원 금지",
+      "sheet": "04_ID안전성",
+      "cell": "F6,F8,F10",
+      "no_repairs_at": [
+        "F6",
+        "F8",
+        "F10"
+      ],
+      "note": "",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "V1",
+      "feature": "드롭다운 삭제",
+      "sheet": "05_유효성규칙",
+      "cell": "G6",
+      "rule": "validation_changed",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "validation_changed"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "V2",
+      "feature": "드롭다운 허용값 변경",
+      "sheet": "05_유효성규칙",
+      "cell": "G7",
+      "rule": "validation_changed",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "validation_changed"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "V3",
+      "feature": "숫자 유효 범위 변경",
+      "sheet": "05_유효성규칙",
+      "cell": "D9",
+      "rule": "validation_changed",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "validation_changed"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "V4",
+      "feature": "동일 유효성 유지",
+      "sheet": "05_유효성규칙",
+      "cell": "G8",
+      "absent_rules": [
+        "validation_changed"
+      ],
+      "note": "",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "S1",
+      "feature": "교차행 참조",
+      "sheet": "06_수식검사범위",
+      "cell": "F6",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_scope_unverified"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "S2",
+      "feature": "자기참조 미검증",
+      "sheet": "06_수식검사범위",
+      "cell": "F8",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_scope_unverified"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "S3",
+      "feature": "상수식 0 나누기",
+      "sheet": "06_수식검사범위",
+      "cell": "F10",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_scope_unverified"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "S4",
+      "feature": "미지원 VLOOKUP",
+      "sheet": "06_수식검사범위",
+      "cell": "F11",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_scope_unverified"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "S5",
+      "feature": "다른 시트 참조",
+      "sheet": "06_수식검사범위",
+      "cell": "F12",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_scope_unverified"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "S6",
+      "feature": "절대 행 참조",
+      "sheet": "06_수식검사범위",
+      "cell": "F13",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_scope_unverified"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "S7",
+      "feature": "상수만 있는 식",
+      "sheet": "06_수식검사범위",
+      "cell": "F15",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_scope_unverified"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "S8",
+      "feature": "같은 행 0 나누기 계산 한계",
+      "sheet": "06_수식검사범위",
+      "cell": "F9",
+      "absent_rules": [
+        "stored_error",
+        "formula_scope_unverified"
+      ],
+      "note": "수식 구조는 지원되지만 0 나누기 계산을 수행하지 않아 오류로 확정하지 못합니다. Excel 재계산이 필요합니다.",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "S9",
+      "feature": "지원 SUM·IF",
+      "sheet": "06_수식검사범위",
+      "cell": "F7,F14",
+      "no_findings_at": [
+        "F7",
+        "F14"
+      ],
+      "note": "",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "E1",
+      "feature": "저장된 #DIV/0!",
+      "sheet": "07_저장오류값",
+      "cell": "F6",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "stored_error"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "E2",
+      "feature": "저장된 #VALUE!",
+      "sheet": "07_저장오류값",
+      "cell": "F7",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "stored_error"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "E3",
+      "feature": "저장된 #N/A",
+      "sheet": "07_저장오류값",
+      "cell": "F8",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "stored_error"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "E4",
+      "feature": "저장된 #NAME?",
+      "sheet": "07_저장오류값",
+      "cell": "F9",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "stored_error"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "E5",
+      "feature": "저장된 #NUM!",
+      "sheet": "07_저장오류값",
+      "cell": "F10",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "stored_error"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "E6",
+      "feature": "저장된 #NULL!",
+      "sheet": "07_저장오류값",
+      "cell": "F11",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "stored_error"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "E7",
+      "feature": "#SPILL! 확장 오류의 호환 저장값",
+      "sheet": "07_저장오류값",
+      "cell": "F12",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "실제 셀에는 표준 #VALUE! 오류를 저장합니다. 확장 오류의 rich-value 메타데이터와 세부 종류는 이 파일로 검증하지 않습니다.",
+      "passed": true,
+      "actual_rules": [
+        "stored_error"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "E8",
+      "feature": "#CALC! 확장 오류의 호환 저장값",
+      "sheet": "07_저장오류값",
+      "cell": "F13",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "실제 셀에는 표준 #VALUE! 오류를 저장합니다. 확장 오류의 rich-value 메타데이터와 세부 종류는 이 파일로 검증하지 않습니다.",
+      "passed": true,
+      "actual_rules": [
+        "stored_error"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "E9",
+      "feature": "저장된 #REF!",
+      "sheet": "07_저장오류값",
+      "cell": "F14",
+      "rule": "broken_reference",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "broken_reference"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "C1",
+      "feature": "열 구조 변경",
+      "sheet": "08_열구조변경",
+      "cell": "시트 전체",
+      "rule": "column_structure_changed",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "column_structure_changed",
+        "formula_changed"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "C2",
+      "feature": "열 이동 후 수식 복원 차단",
+      "sheet": "08_열구조변경",
+      "cell": "F6",
+      "rule": "formula_changed",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "formula_changed"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "P1",
+      "feature": "업무 규칙 부분 지원",
+      "sheet": "09_부분스키마",
+      "cell": "시트 전체",
+      "rule": "business_rules_unavailable",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "business_rules_unavailable"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "P2",
+      "feature": "부분 스키마의 값 비교",
+      "sheet": "09_부분스키마",
+      "cell": "B6",
+      "change": "cell_changed",
+      "note": "",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "H1",
+      "feature": "ID 없는 스키마",
+      "sheet": "10_ID헤더없음",
+      "cell": "시트 전체",
+      "rule": "unsupported_schema",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "unsupported_schema"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "H2",
+      "feature": "중복 헤더",
+      "sheet": "11_중복헤더",
+      "cell": "시트 전체",
+      "rule": "unsupported_schema",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "unsupported_schema"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "OK1",
+      "feature": "지원 함수 10종 정상 대조",
+      "sheet": "12_지원함수",
+      "cell": "F6:F15",
+      "no_findings_sheet": true,
+      "note": "",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "X1",
+      "feature": "HTML·CSV 안전 출력",
+      "sheet": "13_내보내기안전",
+      "cell": "B6",
+      "change": "cell_changed",
+      "csv_escaped": true,
+      "note": "HTML 태그는 글자로 표시하고 CSV의 + 시작 텍스트는 작은따옴표로 보호합니다.",
+      "passed": true,
+      "actual_rules": [],
+      "actual_repairs": []
+    },
+    {
+      "id": "SH1",
+      "feature": "시트 삭제",
+      "sheet": "14_삭제된시트",
+      "cell": "시트 전체",
+      "rule": "sheet_removed",
+      "change": "sheet_removed",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "sheet_removed"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "SH2",
+      "feature": "시트 추가",
+      "sheet": "15_추가된시트",
+      "cell": "시트 전체",
+      "rule": "sheet_added",
+      "change": "sheet_added",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "broken_reference",
+        "sheet_added"
+      ],
+      "actual_repairs": []
+    },
+    {
+      "id": "SH3",
+      "feature": "추가 시트의 정적 오류",
+      "sheet": "15_추가된시트",
+      "cell": "F6",
+      "rule": "broken_reference",
+      "repairable": false,
+      "note": "",
+      "passed": true,
+      "actual_rules": [
+        "broken_reference"
+      ],
+      "actual_repairs": []
+    }
+  ]
+}

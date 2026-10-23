@@ -1,0 +1,215 @@
+/* Workmate: shared appearance tokens. Default dark; the saved preference is applied before paint. */
+:root,:root[data-theme="dark"]{
+  color-scheme:dark;
+  --wm-bg:#11151c;--wm-sidebar:#0d1117;--wm-panel:#191f29;--wm-raised:#202733;--wm-input:#121820;--wm-hover:#242d39;
+  --wm-line:#303947;--wm-line-soft:#252e3a;--wm-text:#e7ebf1;--wm-secondary:#a5afbe;--wm-muted:#8a97a8;
+  --wm-accent:#8badd4;--wm-accent-bg:#26374c;--wm-accent-ink:#0d1c2e;--wm-success:#a0c0b0;--wm-success-bg:#23372e;
+  --wm-risk:#d3b17b;--wm-risk-bg:#352e22;--wm-danger:#d6a1a0;--wm-danger-bg:#38282c;--wm-overlay:#05080db3;
+  --wm-shadow:0 18px 70px #00000055;--navy:var(--wm-text);--teal:var(--wm-accent);--muted:var(--wm-muted);--border:var(--wm-line);
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --wm-bg:#f7f8fa;--wm-sidebar:#eef1f5;--wm-panel:#ffffff;--wm-raised:#ffffff;--wm-input:#ffffff;--wm-hover:#e9eef4;
+  --wm-line:#dce2e9;--wm-line-soft:#e6eaf0;--wm-text:#202a38;--wm-secondary:#586779;--wm-muted:#66768a;
+  --wm-accent:#426b96;--wm-accent-bg:#e4edf7;--wm-accent-ink:#ffffff;--wm-success:#426a54;--wm-success-bg:#e9f2ec;
+  --wm-risk:#89652d;--wm-risk-bg:#f5efdf;--wm-danger:#9d5556;--wm-danger-bg:#f8e9ea;--wm-overlay:#18233066;
+  --wm-shadow:0 18px 70px #17283d22;
+}
+html[data-theme],html[data-theme] body{background:var(--wm-bg);color:var(--wm-text);font-family:'Segoe UI','Malgun Gothic',sans-serif;-webkit-font-smoothing:antialiased}
+html[data-theme] *{scrollbar-width:thin;scrollbar-color:var(--wm-line) transparent}
+html[data-theme] ::selection{color:var(--wm-text);background:var(--wm-accent-bg)}
+html[data-theme] button,html[data-theme] input,html[data-theme] textarea,html[data-theme] select{color:inherit}
+html[data-theme] :is(button,a,input,textarea,select):focus-visible{outline:2px solid var(--wm-accent);outline-offset:3px}
+html[data-theme] :is(input,textarea,select):focus{border-color:var(--wm-accent)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--wm-accent) 15%,transparent)!important}
+html[data-theme] :is(input,textarea)::placeholder{color:var(--wm-muted);opacity:1}
+html[data-theme] :is(select,option,optgroup){background:var(--wm-input);color:var(--wm-text)}
+html[data-theme] :is(input[type=checkbox],input[type=radio]){accent-color:var(--wm-accent)}
+html[data-theme] .workspace :is(h1,h2,h3,h4,strong){color:var(--wm-text)}
+html[data-theme] .workspace :is(p,small,time,code,dt,dd,label,summary){color:var(--wm-secondary)}
+html[data-theme] .workspace :is(p,small,time,code,dt,dd,label,summary) strong{color:var(--wm-text)}
+html[data-theme] .workspace :is(.small-label,.subtle-count,.helper-text,.muted-note,.field-hint,.compact-note,.subtle-notice,.file-download,.file-label,.form-section-label>span,.task-meta,.task-detail-top code,.document-meta,.task-context-row,.manual-stage-control,.schedule-note,.document-picker-head,.search-result-label,.search-type,.memory-meta,.form-label,.work-due,.record-toolbar,.home-footnote,.desk-result-count,.dateline){color:var(--wm-muted)}
+html[data-theme] .workspace :is(.section-heading p,.page-title-row p,.card-heading p,.block-heading p,.example-card>p,.example-expected p,.analysis-form>p,.analysis-aside p,.notice p,.task-summary,.result-answer p,.result-section p,.document-body,.finding>p,.test-row p,.task-description,.task-note p){color:var(--wm-secondary)}
+html[data-theme] .workspace :is(.inline-link,.subtle-link,.side-section-head>button,.example-recommendation i,.reference-strip a,.file-download,.result-sources .inline-link){color:var(--wm-accent)}
+html[data-theme] a:hover{color:var(--wm-accent)}
+html[data-theme] .sidebar{background:var(--wm-sidebar);border-color:var(--wm-line-soft)}
+html[data-theme] :is(.brand,.brand-dot){color:var(--wm-text)}
+html[data-theme] .brand-mark{color:var(--wm-sidebar);background:var(--wm-accent);border-radius:4px}
+html[data-theme] .nav-caption{color:var(--wm-muted);font-size:10px;letter-spacing:.7px;text-transform:uppercase}
+html[data-theme] .nav-item{color:var(--wm-secondary);border:1px solid transparent;border-radius:5px;min-height:37px}
+html[data-theme] .nav-item svg{color:var(--wm-muted)}
+html[data-theme] .nav-item:hover{background:var(--wm-panel);color:var(--wm-text)}
+html[data-theme] .nav-item.active{background:var(--wm-accent-bg);border-color:color-mix(in srgb,var(--wm-accent) 20%,transparent);color:var(--wm-text);box-shadow:inset 2px 0 var(--wm-accent)}
+html[data-theme] .nav-item.active svg{color:var(--wm-accent)}
+html[data-theme] .nav-item::before{background:var(--wm-line-soft)}
+html[data-theme] .nav-count{color:var(--wm-accent);background:var(--wm-bg)}
+html[data-theme] :is(.profile,.page-footer,.local-note){border-color:var(--wm-line-soft);color:var(--wm-muted)}
+html[data-theme] .profile-avatar{background:var(--wm-raised);color:var(--wm-secondary)}
+html[data-theme] .profile strong{color:var(--wm-secondary)}
+html[data-theme] :is(.profile div span,.page-footer>span:last-child){color:var(--wm-muted)}
+html[data-theme] .live-dot{background:var(--wm-success)}
+html[data-theme] .live-dot.offline{background:var(--wm-risk)}
+html[data-theme] .topbar{position:sticky;top:0;z-index:20;background:var(--wm-bg);border-color:var(--wm-line-soft);height:55px}
+html[data-theme] .breadcrumb,html[data-theme] .breadcrumb svg{color:var(--wm-muted)}
+html[data-theme] .breadcrumb strong{color:var(--wm-secondary)}
+html[data-theme] .topbar-actions{gap:14px}
+html[data-theme] :is(.mode-chip,.mode-chip.live){color:var(--wm-secondary)}
+html[data-theme] .mode-chip>span{background:var(--wm-risk)}
+html[data-theme] .mode-chip.live>span{background:var(--wm-success)}
+html[data-theme] .bell-button i{background:var(--wm-accent);color:var(--wm-accent-ink);border-color:var(--wm-bg)}
+html[data-theme] .global-search-trigger{border-color:var(--wm-line);color:var(--wm-secondary);background:var(--wm-panel);height:29px}
+html[data-theme] .global-search-trigger kbd{color:var(--wm-muted);border-color:var(--wm-line)}
+html[data-theme] .icon-button{color:var(--wm-muted)}
+html[data-theme] .icon-button:hover{background:var(--wm-hover);color:var(--wm-text)}
+html[data-theme] .theme-toggle{width:28px;height:28px;border:1px solid var(--wm-line);background:var(--wm-panel);color:var(--wm-secondary)}
+html[data-theme] h1{font-weight:650;letter-spacing:-1px}
+html[data-theme] .button{border-radius:5px;font-weight:550}
+html[data-theme] .button.primary{color:var(--wm-accent-ink);background:var(--wm-accent);border-color:var(--wm-accent)}
+html[data-theme] .button.primary:hover:not(:disabled){background:color-mix(in srgb,var(--wm-accent) 85%,var(--wm-text));border-color:var(--wm-accent)}
+html[data-theme] .button.secondary{color:var(--wm-secondary);background:var(--wm-panel);border-color:var(--wm-line)}
+html[data-theme] .button.secondary:hover:not(:disabled){color:var(--wm-text);background:var(--wm-hover);border-color:var(--wm-muted)}
+html[data-theme] .button.text-button{color:var(--wm-accent)}
+html[data-theme] .button.danger{background:var(--wm-danger-bg);border-color:var(--wm-danger);color:var(--wm-danger)}
+html[data-theme] button:disabled{opacity:.43}
+html[data-theme] :is(.input,.text-area,.file-actions select,.desk-filters>select,.documents-toolbar>select,.kanban-card select,.manual-stage-control select){background:var(--wm-input);border-color:var(--wm-line);color:var(--wm-text)}
+html[data-theme] :is(.compact-search,.compact-search input,.quick-entry input,.conversation-composer textarea,.global-search-input>input){color:var(--wm-text)}
+html[data-theme] :is(.compact-search input,.quick-entry input,.conversation-composer textarea,.global-search-input>input){background:transparent}
+html[data-theme] :is(.compact-search input,.quick-entry input,.conversation-composer textarea,.global-search-input>input)::placeholder{color:var(--wm-muted)}
+html[data-theme] :is(.compact-search svg,.quick-entry>svg){color:var(--wm-muted)}
+html[data-theme] :is(.card,.main-shell,.main-content){background:transparent}
+html[data-theme] :is(.card-heading,.block-heading,.overview-line,.desk-view-toolbar,.desk-list,.desk-task-row,.work-list,.work-row.task-row,.compact-task-list,.compact-task-row.task-row,.task-group,.inline-create,.desk-home-side,.example-recommendation,.recent-artifact,.analysis-tabs,.analysis-aside,.example-expected,.reference-strip,.document-list,.documents-toolbar,.document-meta,.document-use,.execution-bar,.sample-file-list>a,.app-grid,.app-card,.workflow-row.workflow-card,.memory-card,.memory-meta,.task-edit-form,.detail-tabs,.task-metadata,.task-context-form,.task-notes,.task-note,.artifact-grid,.artifact-card,.test-row,.record-form,.record-table td,.connection-details>div,.batch-results details,.result-section,.result-sources details,.conversation-log,.conversation-entry){border-color:var(--wm-line-soft)}
+html[data-theme] :is(.quick-entry,.conversation-composer,.file-input-card,.automation-editor,.project-summary,.example-card,.example-files,.kanban-card,.desk-metrics>div,.finding,.record-table,.workflow-files,.task-context-form){background:var(--wm-panel);border-color:var(--wm-line)}
+html[data-theme] .project-summary{border-radius:6px;padding-top:17px;box-shadow:0 2px 0 #0000000a}
+html[data-theme] .project-summary:hover{background:var(--wm-raised);border-color:var(--wm-muted)}
+html[data-theme] .project-summary.selected{border-color:var(--wm-accent);background:var(--wm-accent-bg)}
+html[data-theme] .project-color{width:4px;height:13px;border-radius:1px}
+html[data-theme] .project-summary>div:first-child>svg{color:var(--wm-muted)}
+html[data-theme] .project-progress{background:var(--wm-line)}
+html[data-theme] .project-progress>span{background:var(--wm-accent)}
+html[data-theme] .project-summary footer{color:var(--wm-secondary)}
+html[data-theme] :is(.overview-line,.overview-line>button,.overview-line .subtle-link){color:var(--wm-secondary)}
+html[data-theme] .overview-line b{color:var(--wm-text)}
+html[data-theme] .work-check{background:transparent;border-color:var(--wm-muted);color:var(--wm-accent)}
+html[data-theme] .work-check.done{background:var(--wm-success-bg);border-color:var(--wm-success-bg);color:var(--wm-success)}
+html[data-theme] :is(.desk-task-row:hover,.work-row:hover,.compact-task-row:hover,.app-card:hover,.sample-file-list>a:hover,.artifact-card:hover){background:color-mix(in srgb,var(--wm-panel) 75%,transparent)}
+html[data-theme] .workspace :is(.desk-task-title strong,.work-title strong,.compact-task-row strong,.task-row-copy>strong){color:var(--wm-text);font-weight:450}
+html[data-theme] :is(.view-switch button,.filter-pills button,.tabs button,.analysis-tabs button){color:var(--wm-muted)}
+html[data-theme] :is(.view-switch button.active,.filter-pills button.active){color:var(--wm-text);background:var(--wm-accent-bg)}
+html[data-theme] :is(.view-switch button:hover,.filter-pills button:hover){color:var(--wm-text);background:var(--wm-hover)}
+html[data-theme] :is(.tabs button.active,.analysis-tabs button.active){color:var(--wm-accent)}
+html[data-theme] :is(.tabs button.active:after,.analysis-tabs button.active:after){background:var(--wm-accent)}
+html[data-theme] .kanban-column{background:color-mix(in srgb,var(--wm-panel) 55%,var(--wm-bg));border-color:var(--wm-line-soft)}
+html[data-theme] .kanban-card{border-radius:5px;box-shadow:none}
+html[data-theme] .kanban-card:hover{border-color:var(--wm-muted)}
+html[data-theme] :is(.kanban-empty,.week-empty,.schedule-note,.group-label,.group-label small){color:var(--wm-muted)}
+html[data-theme] .kanban-column>h3>i{background:var(--wm-muted)}
+html[data-theme] .kanban-column>h3>i.stage-in_progress{background:var(--wm-accent)}
+html[data-theme] .kanban-column>h3>i.stage-waiting_input{background:var(--wm-risk)}
+html[data-theme] .kanban-column>h3>i.stage-completed{background:var(--wm-success)}
+html[data-theme] :is(.week-grid,.week-grid>section){border-color:var(--wm-line)}
+html[data-theme] .week-grid .today{background:var(--wm-panel)}
+html[data-theme] .week-grid .today h3{color:var(--wm-accent)}
+html[data-theme] .week-task{background:var(--wm-raised);border-color:var(--wm-line)}
+html[data-theme] .week-task:hover{border-color:var(--wm-accent)}
+html[data-theme] .example-recommendation>span{color:var(--wm-muted)}
+html[data-theme] .example-recommendation:hover strong{color:var(--wm-accent)}
+html[data-theme] .recent-artifact{color:var(--wm-muted)}
+html[data-theme] :is(.document-list>button:hover,.global-search-results>a:hover,.global-search-results>button:hover){background:var(--wm-hover)}
+html[data-theme] .document-list>button.selected{background:var(--wm-accent-bg);border-color:var(--wm-line)}
+html[data-theme] :is(.document-list>button>div,.document-detail-top,.document-picker-head){color:var(--wm-muted)}
+html[data-theme] :is(.document-picker,.document-picker>label,.report-scope,.examples-note){border-color:var(--wm-line)}
+html[data-theme] .document-picker>label:hover{background:var(--wm-panel)}
+html[data-theme] .example-expected{background:transparent}
+html[data-theme] :is(.example-card-kicker,.example-expected>span,.example-card footer,.reference-strip p,.reference-strip h3){color:var(--wm-muted)}
+html[data-theme] .example-card{border-radius:6px}
+html[data-theme] .example-card h2{letter-spacing:-.3px;font-weight:550}
+html[data-theme] .example-card:hover{border-color:var(--wm-muted)}
+html[data-theme] .example-files{background:var(--wm-panel);border-color:var(--wm-line)}
+html[data-theme] .example-files>div:first-child>svg{color:var(--wm-accent)}
+html[data-theme] :is(.icon-box,.icon-box.teal,.icon-box.blue,.icon-box.purple,.icon-box.amber,.artifact-icon,.memory-icon,.automation-symbol){background:var(--wm-raised);color:var(--wm-accent)}
+html[data-theme] .file-visual{color:var(--wm-accent)}
+html[data-theme] .app-card-actions .button.primary{color:var(--wm-accent);background:var(--wm-accent-bg);border-color:var(--wm-line)}
+html[data-theme] .app-card-actions .button.primary:hover{background:var(--wm-hover)}
+html[data-theme] .workflow-row-actions button{color:var(--wm-secondary)}
+html[data-theme] .workflow-row-actions button:hover{color:var(--wm-accent)}
+html[data-theme] :is(.automation-symbol.disabled,.enabled-label.off){background:transparent;color:var(--wm-muted)}
+html[data-theme] .enabled-label{color:var(--wm-success)}
+html[data-theme] .memory-card{background:transparent}
+html[data-theme] .memory-card-heading>button{color:var(--wm-muted)}
+html[data-theme] :is(.modal-backdrop,.search-overlay,.sidebar-overlay){background:var(--wm-overlay)}
+html[data-theme] :is(.modal,.global-search-modal,.notification-panel,.toast){background:var(--wm-raised);border-color:var(--wm-line);box-shadow:var(--wm-shadow)}
+html[data-theme] :is(.modal-head,.global-search-input,.global-search-modal>footer,.notification-row){border-color:var(--wm-line)}
+html[data-theme] .modal-head{background:var(--wm-raised)}
+html[data-theme] .modal{border-radius:8px}
+html[data-theme] :is(.task-summary,.task-description){color:var(--wm-secondary)}
+html[data-theme] .task-context-row>small{background:var(--wm-panel);border-color:var(--wm-line);color:var(--wm-secondary)}
+html[data-theme] .manual-stage-control select{border-color:var(--wm-line)}
+html[data-theme] :is(.notice,.empty-inline,.json-view,.diff-block,.record-table th,.timeline-index,.result-app-link,.suggested-actions,.task-notes form,.document-picker){background:var(--wm-panel);border-color:var(--wm-line)}
+html[data-theme] :is(.result-sources blockquote,.inline-response){border-color:var(--wm-accent)}
+html[data-theme] :is(.source-index,.search-type,.global-search-input>kbd){background:var(--wm-panel);border-color:var(--wm-line);color:var(--wm-accent)}
+html[data-theme] .result-sources summary:hover{background:var(--wm-panel)}
+html[data-theme] :is(.result-sources summary>svg,.task-notes summary>svg,.task-notes summary>span,.global-search-results svg,.detail-timeline time,.batch-results summary>span){color:var(--wm-muted)}
+html[data-theme] .desk-metrics span{color:var(--wm-secondary)}
+html[data-theme] .result-counts{border-color:var(--wm-line)}
+html[data-theme] .result-counts>div{background:var(--wm-panel);border-color:var(--wm-line)}
+html[data-theme] .result-counts>div.red strong{color:var(--wm-danger)}
+html[data-theme] .result-counts>div.amber strong{color:var(--wm-risk)}
+html[data-theme] .result-counts>div.teal strong{color:var(--wm-accent)}
+html[data-theme] :is(.finding-top,.finding-top code,.diff-block code,.diff-block span,.suggested-value,.batch-finding,.batch-finding code){color:var(--wm-secondary)}
+html[data-theme] .artifact-card{background:transparent}
+html[data-theme] .artifact-card>svg{color:var(--wm-muted)}
+html[data-theme] .table-scroll{border-color:var(--wm-line)}
+html[data-theme] .record-table th{color:var(--wm-secondary)}
+html[data-theme] .record-table tr:hover td{background:var(--wm-raised)}
+html[data-theme] .record-fields i{color:var(--wm-risk)}
+html[data-theme] .detail-timeline>div:not(:last-child):after{background:var(--wm-line)}
+html[data-theme] :is(.notification-row.unread,.conversation-entry.from-user){background:var(--wm-panel)}
+html[data-theme] .conversation-entry.from-user{border-left:2px solid var(--wm-accent);padding-left:14px}
+html[data-theme] .notification-mark{background:var(--wm-accent)}
+html[data-theme] .toast span{color:var(--wm-text)}
+html[data-theme] .toast>svg{color:var(--wm-success)}
+html[data-theme] :is(.task-status,.status-todo,.status-queued){color:var(--wm-muted)}
+html[data-theme] :is(.task-status i,.status-todo i,.status-queued i){background:var(--wm-muted)}
+html[data-theme] :is(.task-status.status-running,.task-status.status-in_progress,.status-in_progress){color:var(--wm-accent)}
+html[data-theme] :is(.status-running i,.status-in_progress i){background:var(--wm-accent)}
+html[data-theme] .task-status.status-completed{color:var(--wm-success)}
+html[data-theme] .status-completed i{background:var(--wm-success)}
+html[data-theme] .task-status.status-waiting_input{color:var(--wm-risk)}
+html[data-theme] .status-waiting_input i{background:var(--wm-risk)}
+html[data-theme] .task-status.status-failed{color:var(--wm-danger)}
+html[data-theme] .status-failed i{background:var(--wm-danger)}
+html[data-theme] .badge.neutral{background:var(--wm-panel);border-color:var(--wm-line);color:var(--wm-secondary)}
+html[data-theme] .badge.blue{background:var(--wm-accent-bg);border-color:var(--wm-accent-bg);color:var(--wm-accent)}
+html[data-theme] .badge.green{background:var(--wm-success-bg);border-color:var(--wm-success-bg);color:var(--wm-success)}
+html[data-theme] :is(.badge.amber,.finding-severity.warning,.priority-mark){background:var(--wm-risk-bg);border-color:color-mix(in srgb,var(--wm-risk) 35%,transparent);color:var(--wm-risk)}
+html[data-theme] :is(.badge.red,.finding-severity.error){background:var(--wm-danger-bg);border-color:var(--wm-danger-bg);color:var(--wm-danger)}
+html[data-theme] :is(.waiting-panel,.registration-panel,.result-warnings,.connection-alert,.delete-confirm){background:var(--wm-risk-bg);border-color:color-mix(in srgb,var(--wm-risk) 30%,transparent);color:var(--wm-risk)}
+html[data-theme] :is(.waiting-panel,.registration-panel,.result-warnings,.connection-alert,.delete-confirm) :is(p,h3,svg,span){color:var(--wm-risk)}
+html[data-theme] :is(.danger-notice,.toast.error){background:var(--wm-danger-bg);border-color:var(--wm-danger);color:var(--wm-danger)}
+html[data-theme] :is(.danger-notice p,.toast.error span,.toast.error>svg,.error-text,.danger-hover:hover){color:var(--wm-danger)}
+html[data-theme] .running-notice{background:var(--wm-accent-bg);border-color:var(--wm-line);color:var(--wm-accent)}
+html[data-theme] .has-risk{color:var(--wm-risk)!important}
+html[data-theme] .text-teal,html[data-theme] .repairable{color:var(--wm-success)!important}
+html[data-theme] .text-amber{color:var(--wm-risk)!important}
+html[data-theme] :is(.empty,.list-empty,.empty svg,.list-empty svg,.initial-loading,.side-empty){color:var(--wm-muted)}
+html[data-theme] .workspace :is(.empty p,.list-empty p){color:var(--wm-muted)}
+html[data-theme] .global-search-modal>footer{color:var(--wm-muted);background:var(--wm-panel)}
+html[data-theme] .global-search-input>input{color:var(--wm-text)}
+@media(max-width:760px){html[data-theme] .topbar{height:52px}html[data-theme] .topbar-actions{gap:9px}html[data-theme] .theme-toggle{width:25px;height:25px}html[data-theme] .global-search-trigger{border:0;background:transparent}html[data-theme] .nav-item{min-height:38px}html[data-theme] .project-summary{padding:13px}}
+@media(prefers-reduced-motion:reduce){html[data-theme] *,html[data-theme] *:before,html[data-theme] *:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+
+/* Components with legacy specificity keep the same readable scale. */
+html[data-theme] .conversation-entry.from-user .conversation-byline strong{color:var(--wm-accent)}
+html[data-theme] .file-label>span:first-child,html[data-theme] .file-visual span{color:var(--wm-secondary)}
+html[data-theme] .document-list>button.selected>div,html[data-theme] .document-list>button.selected>div>span{color:var(--wm-secondary)}
+html[data-theme] .document-list>button>div,html[data-theme] .document-list>button>div>span{color:var(--wm-secondary)}
+html[data-theme] .diff-block>div{background:var(--wm-input);border-color:var(--wm-line)}html[data-theme] .diff-block>div+div{background:var(--wm-panel);border-color:var(--wm-line);border-left:2px solid var(--wm-accent)}html[data-theme] .diff-block code{color:var(--wm-text)}html[data-theme] .diff-block span{color:var(--wm-secondary)}
+/* Hover states are explicit so inherited light styles cannot leak into dark surfaces. */
+html[data-theme] .workspace .task-row:hover,html[data-theme] .workspace .notification-row:hover,html[data-theme] .workspace .prompt-suggestions button:hover{background:var(--wm-hover);border-color:var(--wm-line);color:var(--wm-text)}
+html[data-theme] .workspace .danger-hover:hover{background:var(--wm-danger-bg);color:var(--wm-danger)}
+html[data-theme] .workspace .activity-item:hover p,html[data-theme] .workspace .tool-guide button:hover strong{color:var(--wm-accent)}
+html[data-theme] .workspace .stat-card:hover{border-color:var(--wm-accent)}
+html[data-theme] .record-table td{color:var(--wm-secondary)}
+html[data-theme] .record-table .file-name{color:var(--wm-text)}
+html[data-theme] .kanban-card-meta,html[data-theme] .week-task>span{color:var(--wm-secondary)}
+html[data-theme] .result-sources blockquote,html[data-theme] .json-view,html[data-theme] .record-fields label>span{color:var(--wm-secondary)}
+html[data-theme] .filter-pills{min-width:0;max-width:100%;flex-wrap:wrap}

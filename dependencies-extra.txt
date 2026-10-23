@@ -1,0 +1,7 @@
+# Builder uses Python standard library only.
+# Actual UI verification requires Node.js and the Playwright package:
+#   npm install playwright
+# It uses installed Microsoft Edge/Google Chrome headlessly when available.
+# Alternative: npx playwright install chromium
+# Optional overrides: WORKMATE_PLAYWRIGHT_MODULE, WORKMATE_BROWSER_CHANNEL.
+# Codex bundled Playwright is detected automatically in this environment.

@@ -1,0 +1,2 @@
+'use strict';
+const update=async()=>{const n=await window.workmateDesktop.nudge();document.getElementById('title').textContent=n?.title||'';document.getElementById('body').textContent=n?.body||'';};window.workmateDesktop.onStatus(update);update();document.getElementById('dismiss').onclick=()=>window.workmateDesktop.dismiss();document.getElementById('open').onclick=()=>window.workmateDesktop.show();

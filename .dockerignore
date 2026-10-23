@@ -1,0 +1,16 @@
+.git
+.env*
+.venv
+**/node_modules
+**/__pycache__
+.pytest_cache
+data
+!data/fixtures
+!data/fixtures/**
+!data/examples
+!data/examples/**
+desktop
+verification
+tests
+frontend/dist
+docs

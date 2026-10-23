@@ -1,0 +1,597 @@
+{
+  "synthetic": true,
+  "cases": [
+    {
+      "id": "F1",
+      "feature": "수식 상수화",
+      "sheet": "01_수식복원",
+      "cell": "F6",
+      "rule": "formula_replaced",
+      "repairable": true,
+      "note": ""
+    },
+    {
+      "id": "F2",
+      "feature": "수식 누락",
+      "sheet": "01_수식복원",
+      "cell": "F7",
+      "rule": "missing_formula",
+      "repairable": true,
+      "note": ""
+    },
+    {
+      "id": "F3",
+      "feature": "수식 변경",
+      "sheet": "01_수식복원",
+      "cell": "F8",
+      "rule": "formula_changed",
+      "repairable": true,
+      "note": ""
+    },
+    {
+      "id": "F4",
+      "feature": "깨진 참조",
+      "sheet": "01_수식복원",
+      "cell": "F9",
+      "rule": "broken_reference",
+      "repairable": true,
+      "note": ""
+    },
+    {
+      "id": "F5",
+      "feature": "수식이 텍스트로 변경",
+      "sheet": "01_수식복원",
+      "cell": "F10",
+      "rule": "formula_replaced",
+      "repairable": true,
+      "note": ""
+    },
+    {
+      "id": "D1",
+      "feature": "제목 필수",
+      "sheet": "02_데이터검사",
+      "cell": "B6",
+      "rule": "required_value",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D2",
+      "feature": "담당자 필수",
+      "sheet": "02_데이터검사",
+      "cell": "C7",
+      "rule": "required_value",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D3",
+      "feature": "수량 필수",
+      "sheet": "02_데이터검사",
+      "cell": "D8",
+      "rule": "required_value",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D4",
+      "feature": "단가 필수",
+      "sheet": "02_데이터검사",
+      "cell": "E9",
+      "rule": "required_value",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D5",
+      "feature": "상태 필수",
+      "sheet": "02_데이터검사",
+      "cell": "G10",
+      "rule": "required_value",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D6",
+      "feature": "숫자 대신 문자",
+      "sheet": "02_데이터검사",
+      "cell": "D11",
+      "rule": "numeric_input",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D7",
+      "feature": "숫자 대신 논리값",
+      "sheet": "02_데이터검사",
+      "cell": "E12",
+      "rule": "numeric_input",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D8",
+      "feature": "음수 수량",
+      "sheet": "02_데이터검사",
+      "cell": "D13",
+      "rule": "negative_input",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D9",
+      "feature": "음수 단가",
+      "sheet": "02_데이터검사",
+      "cell": "E14",
+      "rule": "negative_input",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D10",
+      "feature": "허용 상태",
+      "sheet": "02_데이터검사",
+      "cell": "G15",
+      "rule": "invalid_status",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "D11",
+      "feature": "0과 누락 구분",
+      "sheet": "02_데이터검사",
+      "cell": "D16",
+      "absent_rules": [
+        "required_value",
+        "negative_input",
+        "numeric_input"
+      ],
+      "note": "0은 유효한 숫자로 검사합니다."
+    },
+    {
+      "id": "R1",
+      "feature": "행 이동 오탐 방지",
+      "sheet": "03_행비교",
+      "cell": "A6:G8",
+      "no_changes_for_keys": [
+        "R-A",
+        "R-B",
+        "R-C"
+      ],
+      "note": ""
+    },
+    {
+      "id": "R2",
+      "feature": "추가된 행",
+      "sheet": "03_행비교",
+      "cell": "A9",
+      "change": "row_added",
+      "key": "R-ADD",
+      "note": ""
+    },
+    {
+      "id": "R3",
+      "feature": "삭제된 행",
+      "sheet": "03_행비교",
+      "cell": "기준 A9",
+      "change": "row_removed",
+      "key": "R-DELETE",
+      "note": ""
+    },
+    {
+      "id": "I1",
+      "feature": "기준 중복 ID",
+      "sheet": "04_ID안전성",
+      "cell": "A6",
+      "rule": "baseline_duplicate_id",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "I2",
+      "feature": "수정본 중복 ID",
+      "sheet": "04_ID안전성",
+      "cell": "A8",
+      "rule": "duplicate_id",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "I3",
+      "feature": "ID 누락",
+      "sheet": "04_ID안전성",
+      "cell": "A10",
+      "rule": "missing_id",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "I4",
+      "feature": "수식 ID 사용 금지",
+      "sheet": "04_ID안전성",
+      "cell": "A11",
+      "rule": "formula_id",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "I5",
+      "feature": "숫자/문자 ID 구분",
+      "sheet": "04_ID안전성",
+      "cell": "A12",
+      "change": "row_added",
+      "key": "1",
+      "note": "숫자 1과 문자 1을 서로 다른 ID로 처리합니다."
+    },
+    {
+      "id": "I6",
+      "feature": "공백 ID 보존",
+      "sheet": "04_ID안전성",
+      "cell": "A13",
+      "change": "row_added",
+      "key": "공백ID",
+      "note": "ID의 공백을 자동 제거하지 않습니다."
+    },
+    {
+      "id": "I7",
+      "feature": "모호한 행의 수식 복원 금지",
+      "sheet": "04_ID안전성",
+      "cell": "F6,F8,F10",
+      "no_repairs_at": [
+        "F6",
+        "F8",
+        "F10"
+      ],
+      "note": ""
+    },
+    {
+      "id": "V1",
+      "feature": "드롭다운 삭제",
+      "sheet": "05_유효성규칙",
+      "cell": "G6",
+      "rule": "validation_changed",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "V2",
+      "feature": "드롭다운 허용값 변경",
+      "sheet": "05_유효성규칙",
+      "cell": "G7",
+      "rule": "validation_changed",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "V3",
+      "feature": "숫자 유효 범위 변경",
+      "sheet": "05_유효성규칙",
+      "cell": "D9",
+      "rule": "validation_changed",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "V4",
+      "feature": "동일 유효성 유지",
+      "sheet": "05_유효성규칙",
+      "cell": "G8",
+      "absent_rules": [
+        "validation_changed"
+      ],
+      "note": ""
+    },
+    {
+      "id": "S1",
+      "feature": "교차행 참조",
+      "sheet": "06_수식검사범위",
+      "cell": "F6",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "S2",
+      "feature": "자기참조 미검증",
+      "sheet": "06_수식검사범위",
+      "cell": "F8",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "S3",
+      "feature": "상수식 0 나누기",
+      "sheet": "06_수식검사범위",
+      "cell": "F10",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "S4",
+      "feature": "미지원 VLOOKUP",
+      "sheet": "06_수식검사범위",
+      "cell": "F11",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "S5",
+      "feature": "다른 시트 참조",
+      "sheet": "06_수식검사범위",
+      "cell": "F12",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "S6",
+      "feature": "절대 행 참조",
+      "sheet": "06_수식검사범위",
+      "cell": "F13",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "S7",
+      "feature": "상수만 있는 식",
+      "sheet": "06_수식검사범위",
+      "cell": "F15",
+      "rule": "formula_scope_unverified",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "S8",
+      "feature": "같은 행 0 나누기 계산 한계",
+      "sheet": "06_수식검사범위",
+      "cell": "F9",
+      "absent_rules": [
+        "stored_error",
+        "formula_scope_unverified"
+      ],
+      "note": "수식 구조는 지원되지만 0 나누기 계산을 수행하지 않아 오류로 확정하지 못합니다. Excel 재계산이 필요합니다."
+    },
+    {
+      "id": "S9",
+      "feature": "지원 SUM·IF",
+      "sheet": "06_수식검사범위",
+      "cell": "F7,F14",
+      "no_findings_at": [
+        "F7",
+        "F14"
+      ],
+      "note": ""
+    },
+    {
+      "id": "E1",
+      "feature": "저장된 #DIV/0!",
+      "sheet": "07_저장오류값",
+      "cell": "F6",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "E2",
+      "feature": "저장된 #VALUE!",
+      "sheet": "07_저장오류값",
+      "cell": "F7",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "E3",
+      "feature": "저장된 #N/A",
+      "sheet": "07_저장오류값",
+      "cell": "F8",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "E4",
+      "feature": "저장된 #NAME?",
+      "sheet": "07_저장오류값",
+      "cell": "F9",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "E5",
+      "feature": "저장된 #NUM!",
+      "sheet": "07_저장오류값",
+      "cell": "F10",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "E6",
+      "feature": "저장된 #NULL!",
+      "sheet": "07_저장오류값",
+      "cell": "F11",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "E7",
+      "feature": "#SPILL! 확장 오류의 호환 저장값",
+      "sheet": "07_저장오류값",
+      "cell": "F12",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "실제 셀에는 표준 #VALUE! 오류를 저장합니다. 확장 오류의 rich-value 메타데이터와 세부 종류는 이 파일로 검증하지 않습니다."
+    },
+    {
+      "id": "E8",
+      "feature": "#CALC! 확장 오류의 호환 저장값",
+      "sheet": "07_저장오류값",
+      "cell": "F13",
+      "rule": "stored_error",
+      "repairable": false,
+      "note": "실제 셀에는 표준 #VALUE! 오류를 저장합니다. 확장 오류의 rich-value 메타데이터와 세부 종류는 이 파일로 검증하지 않습니다."
+    },
+    {
+      "id": "E9",
+      "feature": "저장된 #REF!",
+      "sheet": "07_저장오류값",
+      "cell": "F14",
+      "rule": "broken_reference",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "C1",
+      "feature": "열 구조 변경",
+      "sheet": "08_열구조변경",
+      "cell": "시트 전체",
+      "rule": "column_structure_changed",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "C2",
+      "feature": "열 이동 후 수식 복원 차단",
+      "sheet": "08_열구조변경",
+      "cell": "F6",
+      "rule": "formula_changed",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "P1",
+      "feature": "업무 규칙 부분 지원",
+      "sheet": "09_부분스키마",
+      "cell": "시트 전체",
+      "rule": "business_rules_unavailable",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "P2",
+      "feature": "부분 스키마의 값 비교",
+      "sheet": "09_부분스키마",
+      "cell": "B6",
+      "change": "cell_changed",
+      "note": ""
+    },
+    {
+      "id": "H1",
+      "feature": "ID 없는 스키마",
+      "sheet": "10_ID헤더없음",
+      "cell": "시트 전체",
+      "rule": "unsupported_schema",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "H2",
+      "feature": "중복 헤더",
+      "sheet": "11_중복헤더",
+      "cell": "시트 전체",
+      "rule": "unsupported_schema",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "OK1",
+      "feature": "지원 함수 10종 정상 대조",
+      "sheet": "12_지원함수",
+      "cell": "F6:F15",
+      "no_findings_sheet": true,
+      "note": ""
+    },
+    {
+      "id": "X1",
+      "feature": "HTML·CSV 안전 출력",
+      "sheet": "13_내보내기안전",
+      "cell": "B6",
+      "change": "cell_changed",
+      "csv_escaped": true,
+      "note": "HTML 태그는 글자로 표시하고 CSV의 + 시작 텍스트는 작은따옴표로 보호합니다."
+    },
+    {
+      "id": "SH1",
+      "feature": "시트 삭제",
+      "sheet": "14_삭제된시트",
+      "cell": "시트 전체",
+      "rule": "sheet_removed",
+      "change": "sheet_removed",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "SH2",
+      "feature": "시트 추가",
+      "sheet": "15_추가된시트",
+      "cell": "시트 전체",
+      "rule": "sheet_added",
+      "change": "sheet_added",
+      "repairable": false,
+      "note": ""
+    },
+    {
+      "id": "SH3",
+      "feature": "추가 시트의 정적 오류",
+      "sheet": "15_추가된시트",
+      "cell": "F6",
+      "rule": "broken_reference",
+      "repairable": false,
+      "note": ""
+    }
+  ],
+  "errorCells": [
+    {
+      "sheet": "07_저장오류값",
+      "cell": "F6",
+      "error": "#DIV/0!"
+    },
+    {
+      "sheet": "07_저장오류값",
+      "cell": "F7",
+      "error": "#VALUE!"
+    },
+    {
+      "sheet": "07_저장오류값",
+      "cell": "F8",
+      "error": "#N/A"
+    },
+    {
+      "sheet": "07_저장오류값",
+      "cell": "F9",
+      "error": "#NAME?"
+    },
+    {
+      "sheet": "07_저장오류값",
+      "cell": "F10",
+      "error": "#NUM!"
+    },
+    {
+      "sheet": "07_저장오류값",
+      "cell": "F11",
+      "error": "#NULL!"
+    },
+    {
+      "sheet": "07_저장오류값",
+      "cell": "F12",
+      "error": "#VALUE!"
+    },
+    {
+      "sheet": "07_저장오류값",
+      "cell": "F13",
+      "error": "#VALUE!"
+    },
+    {
+      "sheet": "07_저장오류값",
+      "cell": "F14",
+      "error": "#REF!"
+    }
+  ]
+}
